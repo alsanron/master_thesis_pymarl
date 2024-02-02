@@ -1,0 +1,6 @@
+numpy
+sacred
+torch
+PyYAML==3.13
+git+https://github.com/oxwhirl/smac.git
+tensorboard-logger
