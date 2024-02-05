@@ -44,9 +44,7 @@ echo 'Adding SMAC maps.'
 MAP_DIR="$SC2PATH/Maps/"
 echo 'MAP_DIR is set to '$MAP_DIR
 
-if [ ! -d $MAP_DIR ]; then
-        mkdir -p $MAP_DIR
-
+if [ ! -d "$MAP_DIR/SMAC_Maps" ]; then
         echo "Maps not found in $MAP_DIR. Downloading now ..."
 
         cd ..
