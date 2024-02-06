@@ -1,3 +1,6 @@
 /tb_logs/
 /results/
 /3rdparty/
+*.pyc
+*.pyo
+__pycache__/
