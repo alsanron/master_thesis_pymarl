@@ -46,9 +46,7 @@ class Logger:
                 continue
             i += 1
             window = 5 if k != "epsilon" else 1
-
-            print("Type of self.stats[k][-window:]:", type(self.stats[k][-window:]))
-              
+             
             tensor_values = []
             for x in self.stats[k][-window:]:
                 if isinstance(x[1], th.Tensor):

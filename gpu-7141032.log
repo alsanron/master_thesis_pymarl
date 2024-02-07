@@ -1,0 +1,192 @@
+
+The following have been reloaded with a version change:
+  1) GCCcore/11.2.0 => GCCcore/12.3.0
+  2) Python/3.8.16-GCCcore-11.2.0 => Python/3.11.3-GCCcore-12.3.0
+  3) SQLite/3.36-GCCcore-11.2.0 => SQLite/3.42.0-GCCcore-12.3.0
+  4) Tcl/8.6.11-GCCcore-11.2.0 => Tcl/8.6.13-GCCcore-12.3.0
+  5) XZ/5.2.5-GCCcore-11.2.0 => XZ/5.4.2-GCCcore-12.3.0
+  6) binutils/2.37-GCCcore-11.2.0 => binutils/2.40-GCCcore-12.3.0
+  7) bzip2/1.0.8-GCCcore-11.2.0 => bzip2/1.0.8-GCCcore-12.3.0
+  8) libffi/3.4.2-GCCcore-11.2.0 => libffi/3.4.4-GCCcore-12.3.0
+  9) libreadline/8.1-GCCcore-11.2.0 => libreadline/8.2-GCCcore-12.3.0
+ 10) ncurses/6.2-GCCcore-11.2.0 => ncurses/6.4-GCCcore-12.3.0
+ 11) zlib/1.2.11-GCCcore-11.2.0 => zlib/1.2.13-GCCcore-12.3.0
+
+
+The following have been reloaded with a version change:
+  1) FFTW/3.3.10-GCC-12.3.0 => FFTW/3.3.10-GCC-11.3.0
+  2) FlexiBLAS/3.3.1-GCC-12.3.0 => FlexiBLAS/3.2.0-GCC-11.3.0
+  3) GCC/12.3.0 => GCC/11.3.0
+  4) GCCcore/12.3.0 => GCCcore/11.3.0
+  5) GMP/6.2.1-GCCcore-11.2.0 => GMP/6.2.1-GCCcore-11.3.0
+  6) OpenBLAS/0.3.23-GCC-12.3.0 => OpenBLAS/0.3.20-GCC-11.3.0
+  7) Python/3.11.3-GCCcore-12.3.0 => Python/3.10.4-GCCcore-11.3.0
+  8) SQLite/3.42.0-GCCcore-12.3.0 => SQLite/3.38.3-GCCcore-11.3.0
+  9) SciPy-bundle/2023.07-gfbf-2023a => SciPy-bundle/2022.05-foss-2022a
+ 10) Tcl/8.6.13-GCCcore-12.3.0 => Tcl/8.6.12-GCCcore-11.3.0
+ 11) XZ/5.4.2-GCCcore-12.3.0 => XZ/5.2.5-GCCcore-11.3.0
+ 12) binutils/2.40-GCCcore-12.3.0 => binutils/2.38-GCCcore-11.3.0
+ 13) bzip2/1.0.8-GCCcore-12.3.0 => bzip2/1.0.8-GCCcore-11.3.0
+ 14) libffi/3.4.4-GCCcore-12.3.0 => libffi/3.4.2-GCCcore-11.3.0
+ 15) libreadline/8.2-GCCcore-12.3.0 => libreadline/8.1.2-GCCcore-11.3.0
+ 16) ncurses/6.4-GCCcore-12.3.0 => ncurses/6.3-GCCcore-11.3.0
+ 17) pybind11/2.11.1-GCCcore-12.3.0 => pybind11/2.9.2-GCCcore-11.3.0
+ 18) zlib/1.2.13-GCCcore-12.3.0 => zlib/1.2.12-GCCcore-11.3.0
+
+[DEBUG 12:08:48] git.cmd Popen(['git', 'version'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=None, shell=False, universal_newlines=False)
+[DEBUG 12:08:48] git.cmd Popen(['git', 'version'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=None, shell=False, universal_newlines=False)
+[DEBUG 12:08:48] git.cmd Popen(['git', 'diff', '--cached', '--abbrev=40', '--full-index', '--raw'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=None, shell=False, universal_newlines=False)
+[DEBUG 12:08:48] git.cmd Popen(['git', 'diff', '--abbrev=40', '--full-index', '--raw'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=None, shell=False, universal_newlines=False)
+[DEBUG 12:08:48] git.cmd Popen(['git', 'cat-file', '--batch-check'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=<valid stream>, shell=False, universal_newlines=False)
+[DEBUG 12:08:48] git.cmd Popen(['git', 'diff', '--cached', '--abbrev=40', '--full-index', '--raw'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=None, shell=False, universal_newlines=False)
+[DEBUG 12:08:48] git.cmd Popen(['git', 'diff', '--abbrev=40', '--full-index', '--raw'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=None, shell=False, universal_newlines=False)
+[DEBUG 12:08:48] git.cmd Popen(['git', 'cat-file', '--batch-check'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=<valid stream>, shell=False, universal_newlines=False)
+[DEBUG 12:08:48] git.cmd Popen(['git', 'diff', '--cached', '--abbrev=40', '--full-index', '--raw'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=None, shell=False, universal_newlines=False)
+[DEBUG 12:08:48] git.cmd Popen(['git', 'diff', '--abbrev=40', '--full-index', '--raw'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=None, shell=False, universal_newlines=False)
+[DEBUG 12:08:48] git.cmd Popen(['git', 'cat-file', '--batch-check'], cwd=/home3/s5279402/master_thesis_pymarl, stdin=<valid stream>, shell=False, universal_newlines=False)
+[INFO 12:08:48] root Saving to FileStorageObserver in results/sacred.
+[DEBUG 12:08:48] pymarl Using capture mode "fd"
+[INFO 12:08:48] pymarl Running command 'my_main'
+[INFO 12:08:48] pymarl Started run with ID "2"
+[DEBUG 12:08:48] pymarl Starting Heartbeat
+[DEBUG 12:08:48] my_main Started
+[INFO 12:08:48] my_main Experiment Parameters:
+[INFO 12:08:48] my_main 
+
+{   'action_selector': 'epsilon_greedy',
+    'agent': 'rnn',
+    'agent_output_type': 'q',
+    'batch_size': 32,
+    'batch_size_run': 1,
+    'buffer_cpu_only': True,
+    'buffer_size': 5000,
+    'checkpoint_path': '',
+    'critic_lr': 0.0005,
+    'double_q': True,
+    'env': 'sc2',
+    'env_args': {   'continuing_episode': False,
+                    'debug': False,
+                    'difficulty': '7',
+                    'game_version': None,
+                    'heuristic_ai': False,
+                    'heuristic_rest': False,
+                    'map_name': '3m',
+                    'move_amount': 2,
+                    'obs_all_health': True,
+                    'obs_instead_of_state': False,
+                    'obs_last_action': False,
+                    'obs_own_health': True,
+                    'obs_pathing_grid': False,
+                    'obs_terrain_height': False,
+                    'obs_timestep_number': False,
+                    'replay_dir': '',
+                    'replay_prefix': '',
+                    'reward_death_value': 10,
+                    'reward_defeat': 0,
+                    'reward_negative_scale': 0.5,
+                    'reward_only_positive': True,
+                    'reward_scale': True,
+                    'reward_scale_rate': 20,
+                    'reward_sparse': False,
+                    'reward_win': 200,
+                    'seed': 522614109,
+                    'state_last_action': True,
+                    'state_timestep_number': False,
+                    'step_mul': 8},
+    'epsilon_anneal_time': 50000,
+    'epsilon_finish': 0.05,
+    'epsilon_start': 1.0,
+    'evaluate': False,
+    'gamma': 0.99,
+    'grad_norm_clip': 10,
+    'hypernet_embed': 64,
+    'hypernet_layers': 2,
+    'label': 'default_label',
+    'learner': 'q_learner',
+    'learner_log_interval': 10000,
+    'load_step': 0,
+    'local_results_path': 'results',
+    'log_interval': 10000,
+    'lr': 0.0005,
+    'mac': 'basic_mac',
+    'mixer': 'qmix',
+    'mixing_embed_dim': 32,
+    'name': 'qmix',
+    'obs_agent_id': True,
+    'obs_last_action': True,
+    'optim_alpha': 0.99,
+    'optim_eps': 1e-05,
+    'repeat_id': 1,
+    'rnn_hidden_dim': 64,
+    'runner': 'episode',
+    'runner_log_interval': 10000,
+    'save_model': True,
+    'save_model_interval': 2000000,
+    'save_replay': False,
+    'seed': 522614109,
+    't_max': 2050000,
+    'target_update_interval': 200,
+    'test_greedy': True,
+    'test_interval': 10000,
+    'test_nepisode': 32,
+    'use_cuda': True,
+    'use_tensorboard': True}
+
+[INFO 12:08:49] my_main Beginning training for 2050000 timesteps
+[INFO 12:08:49] absl Launching SC2: /home3/s5279402/master_thesis_pymarl/3rdparty/StarCraftII/Versions/Base75689/SC2_x64 -listen 127.0.0.1 -port 42749 -dataDir /home3/s5279402/master_thesis_pymarl/3rdparty/StarCraftII/ -tempDir /tmp/sc-hoh1mmvv/
+[INFO 12:08:49] absl Connecting to: ws://127.0.0.1:42749/sc2api, attempt: 0, running: True
+Version: B75689 (SC2.4.10)
+Build: Aug 12 2019 17:16:57
+Command Line: '"/home3/s5279402/master_thesis_pymarl/3rdparty/StarCraftII/Versions/Base75689/SC2_x64" -listen 127.0.0.1 -port 42749 -dataDir /home3/s5279402/master_thesis_pymarl/3rdparty/StarCraftII/ -tempDir /tmp/sc-hoh1mmvv/'
+Starting up...
+Startup Phase 1 complete
+[INFO 12:08:50] absl Connecting to: ws://127.0.0.1:42749/sc2api, attempt: 1, running: True
+Startup Phase 2 complete
+Creating stub renderer...
+Listening on: 127.0.0.1:42749
+Startup Phase 3 complete. Ready for commands.
+[INFO 12:08:51] absl Connecting to: ws://127.0.0.1:42749/sc2api, attempt: 2, running: True
+ConnectHandler: Request from 127.0.0.1:49766 accepted
+ReadyHandler: 127.0.0.1:49766 ready
+Requesting to join a single player game
+Configuring interface options
+Configure: raw interface enabled
+Configure: feature layer interface disabled
+Configure: score interface disabled
+Configure: render interface disabled
+Launching next game.
+Next launch phase started: 2
+Next launch phase started: 3
+Next launch phase started: 4
+Next launch phase started: 5
+Next launch phase started: 6
+Next launch phase started: 7
+Next launch phase started: 8
+Game has started.
+Using default stable ids, none found at: /home3/s5279402/master_thesis_pymarl/3rdparty/StarCraftII/stableid.json
+Successfully loaded stable ids: GameData\stableid.json
+Sending ResponseJoinGame
+[INFO 12:08:56] my_main t_env: 24 / 2050000
+[INFO 12:08:56] my_main Estimated time left: 25 minutes, 13 seconds. Time passed: 7 seconds
+[INFO 12:09:06] my_main Saving models to results/models/qmix__2024-02-07_12-08-48/24
+[INFO 12:10:00] my_main Updated target network
+[INFO 12:10:46] my_main Recent Stats | t_env:      10006 | Episode:      367
+battle_won_mean:           0.0000	dead_allies_mean:          3.0000	dead_enemies_mean:         0.0000	ep_length_mean:           24.0000
+epsilon:                   1.0000	grad_norm:                 0.8249	loss:                      0.0777	q_taken_mean:             -0.0365
+return_mean:               2.3014	return_std:                0.0000	target_mean:               0.0183	td_error_abs:              0.2010
+test_battle_won_mean:      0.0000	test_dead_allies_mean:     1.3125	test_dead_enemies_mean:    0.1250	test_ep_length_mean:      55.8438
+test_return_mean:          0.9007	test_return_std:           1.0615	
+[INFO 12:10:46] my_main t_env: 10033 / 2050000
+[INFO 12:10:46] my_main Estimated time left: 6 hours, 11 minutes, 58 seconds. Time passed: 1 minutes, 56 seconds
+[INFO 12:10:59] my_main Updated target network
+[INFO 12:11:49] my_main Updated target network
+[INFO 12:12:33] my_main Updated target network
+[INFO 12:12:37] my_main Recent Stats | t_env:      20020 | Episode:      818
+battle_won_mean:           0.0000	dead_allies_mean:          2.9823	dead_enemies_mean:         0.0027	ep_length_mean:           25.6362
+epsilon:                   0.8099	grad_norm:                 0.4397	loss:                      0.0515	q_taken_mean:              0.0110
+return_mean:               2.0158	return_std:                0.3407	target_mean:               0.0380	td_error_abs:              0.1625
+test_battle_won_mean:      0.0000	test_dead_allies_mean:     2.1562	test_dead_enemies_mean:    0.2969	test_ep_length_mean:      40.0938
+test_return_mean:          2.8057	test_return_std:           1.2673	
+[INFO 12:12:37] my_main t_env: 20039 / 2050000
+[INFO 12:12:37] my_main Estimated time left: 6 hours, 17 minutes, 28 seconds. Time passed: 3 minutes, 48 seconds
+[INFO 12:13:21] my_main Updated target network
