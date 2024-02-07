@@ -1,13 +1,10 @@
 #!/bin/bash
-#SBATCH --job-name=cpu
-#SBATCH --output=cpu-%j.log
-#SBATCH --time=06:00:00
-#SBATCH --partition=regular
-#SBATCH --mem=8GB
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
-#SBATCH --partition=regular
+#SBATCH --job-name=gpu
+#SBATCH --output=gpu-%j.log
+#SBATCH --time=05:00:00
+#SBATCH --partition=gpu
+#SBATCH --gpus-per-node=1
+#SBATCH --mem=16GB
 
 source ~/venvs/pymarl_gputest/bin/activate
 module load Python/3.8.16-GCCcore-11.2.0
