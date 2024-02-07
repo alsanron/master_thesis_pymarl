@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "args": ["--config=vdn",
+            "args": ["--config=qmix",
                      "--env-config=sc2",
                      "with","env_args.map_name=3m"]
         }

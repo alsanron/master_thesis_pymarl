@@ -10,6 +10,7 @@ import sys
 import torch as th
 from utils.logging import get_logger
 import yaml
+import time
 
 from run import run
 
@@ -95,5 +96,13 @@ if __name__ == '__main__':
     file_obs_path = os.path.join(results_path, "sacred")
     ex.observers.append(FileStorageObserver.create(file_obs_path))
 
+    start_time = time.time()
+    start_cpu_time = time.process_time()
+    
     ex.run_commandline(params)
-
+    
+    elapsed_time = time.time() - start_time
+    cpu_time_elapsed = time.process_time() - start_cpu_time
+    
+    print("Elapsed time (wall clock): {:.2f} minutes".format(elapsed_time / 60))
+    print("CPU Time Elapsed: {:.2f} minutes".format(cpu_time_elapsed / 60))
