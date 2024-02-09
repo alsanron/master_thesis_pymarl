@@ -23,7 +23,6 @@ ex.captured_out_filter = apply_backspaces_and_linefeeds
 
 results_path = os.path.join(dirname(dirname(abspath(__file__))), "results")
 
-
 @ex.main
 def my_main(_run, _config, _log):
     # Setting the random seed throughout the modules
@@ -95,14 +94,5 @@ if __name__ == '__main__':
     logger.info("Saving to FileStorageObserver in results/sacred.")
     file_obs_path = os.path.join(results_path, "sacred")
     ex.observers.append(FileStorageObserver.create(file_obs_path))
-
-    start_time = time.time()
-    start_cpu_time = time.process_time()
     
     ex.run_commandline(params)
-    
-    elapsed_time = time.time() - start_time
-    cpu_time_elapsed = time.process_time() - start_cpu_time
-    
-    print("Elapsed time (wall clock): {:.2f} minutes".format(elapsed_time / 60))
-    print("CPU Time Elapsed: {:.2f} minutes".format(cpu_time_elapsed / 60))

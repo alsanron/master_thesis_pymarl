@@ -15,7 +15,6 @@ from controllers import REGISTRY as mac_REGISTRY
 from components.episode_buffer import ReplayBuffer
 from components.transforms import OneHot
 
-
 def run(_run, _config, _log):
 
     # check args sanity
@@ -43,9 +42,19 @@ def run(_run, _config, _log):
 
     # sacred is on by default
     logger.setup_sacred(_run)
+    
+    # start logging timestamp
+    start_time = time.time()
+    start_cpu_time = time.process_time()
 
     # Run and train
     run_sequential(args=args, logger=logger)
+    
+    elapsed_time = time.time() - start_time
+    cpu_time_elapsed = time.process_time() - start_cpu_time
+    
+    print("# Elapsed time (wall clock): {:.2f} minutes".format(elapsed_time / 60))
+    print("# CPU Time Elapsed: {:.2f} minutes".format(cpu_time_elapsed / 60))
 
     # Clean up after finishing
     print("Exiting Main")
@@ -56,9 +65,7 @@ def run(_run, _config, _log):
             print("Thread {} is alive! Is daemon: {}".format(t.name, t.daemon))
             t.join(timeout=1)
             print("Thread joined")
-
-    print("Exiting script")
-
+    
     # Making sure framework really exits
     os._exit(os.EX_OK)
 
@@ -72,6 +79,7 @@ def evaluate_sequential(args, runner):
         runner.save_replay()
 
     runner.close_env()
+    
 
 def run_sequential(args, logger):
 
