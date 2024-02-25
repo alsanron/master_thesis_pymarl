@@ -14,6 +14,7 @@ from runners import REGISTRY as r_REGISTRY
 from controllers import REGISTRY as mac_REGISTRY
 from components.episode_buffer import ReplayBuffer
 from components.transforms import OneHot
+import psutil
 
 def run(_run, _config, _log):
 
@@ -42,19 +43,9 @@ def run(_run, _config, _log):
 
     # sacred is on by default
     logger.setup_sacred(_run)
-    
-    # start logging timestamp
-    start_time = time.time()
-    start_cpu_time = time.process_time()
 
     # Run and train
     run_sequential(args=args, logger=logger)
-    
-    elapsed_time = time.time() - start_time
-    cpu_time_elapsed = time.process_time() - start_cpu_time
-    
-    print("# Elapsed time (wall clock): {:.2f} minutes".format(elapsed_time / 60))
-    print("# CPU Time Elapsed: {:.2f} minutes".format(cpu_time_elapsed / 60))
 
     # Clean up after finishing
     print("Exiting Main")
@@ -130,7 +121,7 @@ def run_sequential(args, logger):
         timestep_to_load = 0
 
         if not os.path.isdir(args.checkpoint_path):
-            logger.console_logger.info("Checkpoint directiory {} doesn't exist".format(args.checkpoint_path))
+            logger.console_logger.info("Checkpoint directory {} doesn't exist".format(args.checkpoint_path))
             return
 
         # Go through all files in args.checkpoint_path
@@ -156,6 +147,8 @@ def run_sequential(args, logger):
         if args.evaluate or args.save_replay:
             evaluate_sequential(args, runner)
             return
+        
+    get_system_resources() # it needs to be called once in the beggining to reset values
 
     # start training
     episode = 0
@@ -214,9 +207,16 @@ def run_sequential(args, logger):
 
         if (runner.t_env - last_log_T) >= args.log_interval:
             logger.log_stat("episode", episode, runner.t_env)
+            
+            cpu_usage, memory_usage = get_system_resources()
+            logger.log_stat("cpu_usage", cpu_usage, runner.t_env)
+            logger.log_stat("memory_usage", memory_usage, runner.t_env)
+
             logger.print_recent_stats()
             last_log_T = runner.t_env
 
+    logger.log_stat("wall_time_min", (time.time() - start_time)/60, runner.t_env)
+    
     runner.close_env()
     logger.console_logger.info("Finished Training")
 
@@ -235,3 +235,14 @@ def args_sanity_check(config, _log):
         config["test_nepisode"] = (config["test_nepisode"]//config["batch_size_run"]) * config["batch_size_run"]
 
     return config
+
+
+
+def get_system_resources() -> tuple:
+    # Get the current CPU usage as a percentage
+    cpu_usage = psutil.cpu_percent(interval=None, percpu=False)
+
+    # Get the current memory usage as a percentage
+    memory_usage = psutil.virtual_memory().percent
+
+    return cpu_usage, memory_usage

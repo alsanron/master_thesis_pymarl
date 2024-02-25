@@ -1,10 +1,11 @@
 env: sc2
 
 env_args:
+  # params left by default as original paper
   continuing_episode: False
   difficulty: "7"
   game_version: null
-  map_name: "3m"
+
   move_amount: 2
   obs_all_health: True
   obs_instead_of_state: False
@@ -13,6 +14,7 @@ env_args:
   obs_pathing_grid: False
   obs_terrain_height: False
   obs_timestep_number: False
+
   reward_death_value: 10
   reward_defeat: 0
   reward_negative_scale: 0.5
@@ -30,11 +32,3 @@ env_args:
   heuristic_ai: False
   heuristic_rest: False
   debug: False
-
-test_greedy: True
-test_nepisode: 32
-test_interval: 10000
-log_interval: 10000
-runner_log_interval: 10000
-learner_log_interval: 10000
-t_max: 2050000

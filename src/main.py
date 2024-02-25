@@ -10,7 +10,6 @@ import sys
 import torch as th
 from utils.logging import get_logger
 import yaml
-import time
 
 from run import run
 
@@ -19,7 +18,7 @@ logger = get_logger()
 
 ex = Experiment("pymarl")
 ex.logger = logger
-ex.captured_out_filter = apply_backspaces_and_linefeeds
+ex.captured_out_filter = apply_backspaces_and_linefeeds # makes filtering easier
 
 results_path = os.path.join(dirname(dirname(abspath(__file__))), "results")
 
@@ -80,14 +79,24 @@ if __name__ == '__main__':
         except yaml.YAMLError as exc:
             assert False, "default.yaml error: {}".format(exc)
 
-    # Load algorithm and env base configs
-    env_config = _get_config(params, "--env-config", "envs")
-    alg_config = _get_config(params, "--config", "algs")
-    # config_dict = {**config_dict, **env_config, **alg_config}
+    # Load algorithm and env base configs for the specified algorithm and env ->
+    # they overwrite default values
+    research_config = _get_config(params, "--research_config", "research")
+    
+    # wrapper to make it work with the new config
+    wrapper_list = ["--env-config={}".format(research_config["env"]),
+                    "--config={}".format(research_config["algorithm"])]
+    
+    env_config = _get_config(wrapper_list, "--env-config", "envs")
+    alg_config = _get_config(wrapper_list, "--config", "algs")
+
+    # Updates default configuration params with new values
     config_dict = recursive_dict_update(config_dict, env_config)
     config_dict = recursive_dict_update(config_dict, alg_config)
+    
+    # research config has higher priority
+    config_dict = recursive_dict_update(config_dict, research_config)
 
-    # now add all the config to sacred
     ex.add_config(config_dict)
 
     # Save to disk by default for sacred
