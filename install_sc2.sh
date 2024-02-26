@@ -8,7 +8,7 @@ then
 fi
 
 echo "EXP_DIR: $EXP_DIR_PYMARL"
-cd $EXP_DIR_PYMARL/pymarl
+cd $EXP_DIR_PYMARL/master_thesis_pymarl
 
 if [ ! -d "3rdparty" ]
 then
