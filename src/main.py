@@ -97,6 +97,10 @@ if __name__ == '__main__':
     # research config has higher priority
     config_dict = recursive_dict_update(config_dict, research_config)
 
+    exp_label = config_dict["label"]
+    results_path = os.path.join(results_path, exp_label)
+    os.makedirs(results_path, exist_ok=True)
+
     ex.add_config(config_dict)
 
     # Save to disk by default for sacred

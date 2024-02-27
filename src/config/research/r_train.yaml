@@ -1,14 +1,14 @@
 # Research configuration file -> it includes those parameters more relevant
 # to the research process
 
-runner: "parallel" # Runs x env for an episode
-batch_size_run: 8 # Number of environments to run in parallel
+runner: "episode" # Runs x env for an episode
+batch_size_run: 1 # Number of environments to run in parallel
 batch_size: 32 # Number of episodes to train on
 algorithm: "qmix" 
 env: "sc2" 
 
 env_args:
-  map_name: "3m"
+  map_name: "8m"
   debug: False
 
 t_max: 2050000 # Stop running after this many timesteps
