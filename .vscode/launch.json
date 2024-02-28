@@ -8,7 +8,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                      "--research_config=r_train"
+                      "--research_config=r_unit_test"
                     ]
         }
     ]

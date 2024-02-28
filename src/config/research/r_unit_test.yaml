@@ -6,6 +6,7 @@ label: "unit_test" # Label for the experiment
 runner: "episode" # Runs x env for an episode
 batch_size_run: 1 # Number of environments to run in parallel
 batch_size: 32 # Number of episodes to train on
+buffer_size: 500 # Size of the replay buffer 5000:qmix, 8:coma
 algorithm: "qmix" 
 env: "sc2" 
 
@@ -13,8 +14,13 @@ env_args:
   map_name: "3m"
   debug: False
 
+epsilon_start: 0.5 # 1:qmix, .5:coma
+epsilon_finish: 0.02 # 0.05:qmix, .01:coma
+epsilon_anneal_time: 100000 # 50000:qmix, 100000:coma
+
 t_max: 5000 # Stop running after this many timesteps
 use_cuda: True # Use gpu by default unless it isn't available
+buffer_cpu_only: False # If true we won't keep all of the replay buffer in vram
 
 test_nepisode: 20 # Number of episodes to test for
 test_interval: 2000 # Test after {} timesteps have passed

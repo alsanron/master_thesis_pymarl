@@ -214,10 +214,10 @@ def run_sequential(args, logger):
             logger.log_stat("cpu_usage", cpu_usage, runner.t_env)
             logger.log_stat("memory_usage", memory_usage, runner.t_env)
 
+            logger.log_stat("wall_time_min", (time.time() - start_time)/60, runner.t_env)
+
             logger.print_recent_stats()
             last_log_T = runner.t_env
-
-    logger.log_stat("wall_time_min", (time.time() - start_time)/60, runner.t_env)
     
     runner.close_env()
     logger.console_logger.info("Finished Training")
