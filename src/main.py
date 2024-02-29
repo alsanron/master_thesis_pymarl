@@ -38,7 +38,7 @@ def _get_config(params, arg_name, subfolder):
     config_name = None
     for _i, _v in enumerate(params):
         if _v.split("=")[0] == arg_name:
-            config_name = _v.split("=")[1]
+            config_name = _v.split("=")[1] 
             del params[_i]
             break
 
@@ -49,6 +49,16 @@ def _get_config(params, arg_name, subfolder):
             except yaml.YAMLError as exc:
                 assert False, "{}.yaml error: {}".format(config_name, exc)
         return config_dict
+    
+def _get_param(params, arg_name, type):
+    config_name = None
+    for _i, _v in enumerate(params):
+        if _v.split("=")[0] == arg_name:
+            config_name = type(_v.split("=")[1])  # Cast config_name to type
+            del params[_i]
+            return config_name
+
+    raise ValueError("Argument {} not found in params".format(arg_name))
 
 
 def recursive_dict_update(d, u):
@@ -72,7 +82,7 @@ def config_copy(config):
 if __name__ == '__main__':
     params = deepcopy(sys.argv)
 
-    # Get the defaults from default.yaml
+    # Get the defaults from default.yaml    
     with open(os.path.join(os.path.dirname(__file__), "config", "default.yaml"), "r") as f:
         try:
             config_dict = yaml.load(f, Loader=yaml.SafeLoader)
@@ -81,7 +91,11 @@ if __name__ == '__main__':
 
     # Load algorithm and env base configs for the specified algorithm and env ->
     # they overwrite default values
-    research_config = _get_config(params, "--research_config", "research")
+    batch_job = _get_param(params, "--batch_job", bool)
+
+    settings_path = "research/job_scheduler/batches_ongoing" if batch_job else "research"
+
+    research_config = _get_config(params, "--research_config", settings_path)
     
     # wrapper to make it work with the new config
     wrapper_list = ["--env-config={}".format(research_config["env"]),

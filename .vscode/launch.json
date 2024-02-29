@@ -1,6 +1,7 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Python Debugger: Current File",
             "type": "debugpy",
@@ -8,7 +9,8 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                      "--research_config=r_unit_test"
+                      "--research_config=r_unit_test",
+                      "--batch_job=True"
                     ]
         }
     ]
