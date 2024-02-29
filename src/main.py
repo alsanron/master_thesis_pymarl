@@ -54,7 +54,10 @@ def _get_param(params, arg_name, type):
     config_name = None
     for _i, _v in enumerate(params):
         if _v.split("=")[0] == arg_name:
-            config_name = type(_v.split("=")[1])  # Cast config_name to type
+            if type is bool:
+                config_name = _v.split("=")[1].lower() == "true"
+            else:
+                raise ValueError("Variable type not supported")
             del params[_i]
             return config_name
 

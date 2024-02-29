@@ -10,7 +10,7 @@
             "console": "integratedTerminal",
             "args": [
                       "--research_config=r_unit_test",
-                      "--batch_job=True"
+                      "--batch_job=False"
                     ]
         }
     ]
