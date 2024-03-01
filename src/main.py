@@ -96,7 +96,10 @@ if __name__ == '__main__':
     # they overwrite default values
     batch_job = _get_param(params, "--batch_job", bool)
 
-    use_cuda = _get_param(params, "--use_cuda", bool) if "--use_cuda" in params else False
+    try:
+        use_cuda = _get_param(params, "--use_cuda", bool)
+    except ValueError:
+        use_cuda = False
 
     settings_path = "research/job_scheduler/batches_ongoing" if batch_job else "research"
 

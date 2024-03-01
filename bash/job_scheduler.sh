@@ -25,7 +25,7 @@ while true; do
 
     echo "#############################################"
 
-    python3 src/main.py --research_config="$selected_file_no_extension" --batch_job=True
+    python3 src/main.py --research_config="$selected_file_no_extension" --batch_job=True --use_cuda=True
 
     python_exit_status=$?
 

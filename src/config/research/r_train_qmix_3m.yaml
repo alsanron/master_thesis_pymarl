@@ -22,7 +22,7 @@ epsilon_anneal_time: 50000 # 50000:qmix, 100000:coma
 
 t_max: 1050000 # Stop running after this many timesteps. Default: 2050000
 use_cuda: True # Use gpu by default unless it isn't available
-buffer_cpu_only: False # If true we won't keep all of the replay buffer in vram
+buffer_cpu_only: True # If true we won't keep all of the replay buffer in vram
 
 test_nepisode: 32 # Number of episodes to test for
 test_interval: 10000 # Test after {} timesteps have passed

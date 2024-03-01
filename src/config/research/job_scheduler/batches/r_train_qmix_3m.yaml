@@ -14,7 +14,7 @@ transfer: False # If true, transfer learning is used
 
 env_args:
   map_name: "3m"
-  debug: True
+  debug: False
 
 epsilon_start: 1 # 1:qmix, .5:coma
 epsilon_finish: 0.05 # 0.05:qmix, .01:coma
@@ -22,7 +22,7 @@ epsilon_anneal_time: 50000 # 50000:qmix, 100000:coma
 
 t_max: 1050000 # Stop running after this many timesteps. Default: 2050000
 use_cuda: True # Use gpu by default unless it isn't available
-buffer_cpu_only: False # If true we won't keep all of the replay buffer in vram
+buffer_cpu_only: True # If true we won't keep all of the replay buffer in vram
 
 test_nepisode: 32 # Number of episodes to test for
 test_interval: 10000 # Test after {} timesteps have passed

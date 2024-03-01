@@ -11,7 +11,7 @@
             "args": [
                       "--research_config=r_unit_test",
                       "--batch_job=False",
-                      "--use_cuda=False"
+                      "--use_cuda=True"
                     ]
         }
     ]
