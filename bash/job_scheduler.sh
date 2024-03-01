@@ -37,10 +37,28 @@ while true; do
         echo "Python execution successful. Moving file."
         # Move file if Python execution was successful
         mv "$folder_ongoing/$selected_file_no_extension.yaml" "$folder_processed"
+
     else
-        echo "Python execution failed. Skipping file."
-        mv "$folder_ongoing/$selected_file_no_extension.yaml" "$folder_fault"
+        echo "Python execution failed. Trying with use_cuda=False."
+        python3 src/main.py --research_config="$selected_file_no_extension" --batch_job=True --use_cuda=False
+
+        python_exit_status=$?
+
+        echo "#############################################"
+
+        echo "Python exit status: $python_exit_status"
+
+        if [ $python_exit_status -eq 0 ]; then
+            echo "Python execution successful with use_cuda=False. Moving file."
+            # Move file if Python execution was successful with use_cuda=False
+            mv "$folder_ongoing/$selected_file_no_extension.yaml" "$folder_processed"
+        else
+            echo "Python execution failed with use_cuda=False. Moving file to error folder."
+            mv "$folder_ongoing/$selected_file_no_extension.yaml" "$folder_fault"
+        fi
     fi
+
+
 
     echo "#############################################"
 done

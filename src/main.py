@@ -96,6 +96,8 @@ if __name__ == '__main__':
     # they overwrite default values
     batch_job = _get_param(params, "--batch_job", bool)
 
+    use_cuda = _get_param(params, "--use_cuda", bool) if "--use_cuda" in params else False
+
     settings_path = "research/job_scheduler/batches_ongoing" if batch_job else "research"
 
     research_config = _get_config(params, "--research_config", settings_path)
@@ -113,6 +115,8 @@ if __name__ == '__main__':
     
     # research config has higher priority
     config_dict = recursive_dict_update(config_dict, research_config)
+
+    config_dict["use_cuda"] = use_cuda
 
     exp_label = config_dict["label"]
     results_path = os.path.join(results_path, exp_label)
