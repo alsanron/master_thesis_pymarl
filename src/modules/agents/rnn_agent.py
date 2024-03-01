@@ -7,7 +7,10 @@ class RNNAgent(nn.Module):
         self.args = args
 
         self.fc1 = nn.Linear(input_shape, args.rnn_hidden_dim)
+
+        # by default num_layers=1, bias=True, batch_first=False
         self.rnn = nn.GRUCell(args.rnn_hidden_dim, args.rnn_hidden_dim)
+
         self.fc2 = nn.Linear(args.rnn_hidden_dim, args.n_actions)
 
     def init_hidden(self):

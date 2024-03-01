@@ -9,7 +9,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                      "--research_config=r_unit_test",
+                      "--research_config=r_transfer_qmix",
                       "--batch_job=False"
                     ]
         }

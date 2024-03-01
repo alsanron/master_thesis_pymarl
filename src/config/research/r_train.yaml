@@ -10,6 +10,8 @@ buffer_size: 500 # Size of the replay buffer 5000:qmix, 8:coma
 algorithm: "coma" 
 env: "sc2" 
 
+transfer: False # If true, transfer learning is used
+
 env_args:
   map_name: "2s3z"
   debug: False

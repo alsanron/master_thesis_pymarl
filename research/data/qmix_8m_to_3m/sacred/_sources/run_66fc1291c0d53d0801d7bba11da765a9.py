@@ -16,6 +16,8 @@ from components.episode_buffer import ReplayBuffer
 from components.transforms import OneHot
 import psutil
 
+from transfer_learning.basic_tl import direct_transfer_weights
+
 def run(_run, _config, _log):
 
     # check args sanity
@@ -107,6 +109,9 @@ def run_sequential(args, logger):
 
     # Setup multiagent controller here
     mac = mac_REGISTRY[args.mac](buffer.scheme, groups, args)
+
+    if args.transfer:
+        direct_transfer_weights(args.tl_args["source_maps"][0], mac)
 
     # Give runner the scheme
     runner.setup(scheme=scheme, groups=groups, preprocess=preprocess, mac=mac)
@@ -214,10 +219,10 @@ def run_sequential(args, logger):
             logger.log_stat("cpu_usage", cpu_usage, runner.t_env)
             logger.log_stat("memory_usage", memory_usage, runner.t_env)
 
+            logger.log_stat("wall_time_min", (time.time() - start_time)/60, runner.t_env)
+
             logger.print_recent_stats()
             last_log_T = runner.t_env
-
-    logger.log_stat("wall_time_min", (time.time() - start_time)/60, runner.t_env)
     
     runner.close_env()
     logger.console_logger.info("Finished Training")
