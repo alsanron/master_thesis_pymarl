@@ -2,15 +2,9 @@ import torch as th
 import os
 from os.path import dirname, abspath
 import json
+import random
 
 data_path = os.path.join(dirname(dirname(dirname(abspath(__file__)))), "research", "data")
-baselines_path = os.path.join(data_path, "baselines")
-
-def get_list_of_baseline_models():
-    # Get the list of baseline models
-    baseline_models = os.listdir(baselines_path)
-
-    return baseline_models
 
 def extract_gru_params(state_dict):
     # Extract the GRU parameters from the state_dict
@@ -22,14 +16,19 @@ def extract_gru_params(state_dict):
 
     return gru_params
 
+def sample_subfolder_randomly(model_path):
+    subfolders = [f for f in os.listdir(model_path) if os.path.isdir(os.path.join(model_path, f))]
+    return random.choice(subfolders)
+
 
 def load_model(model:str, timestep:int=0, agent="rnn"):
     # Define the path to the baseline model based on the model 
-    baseline_path = f"{baselines_path}/{model}"
-    model_path = f"{baseline_path}/models"
-    results_path = f"{baseline_path}/sacred/info.json"
+    model_path = f"{data_path}/{model}/models"
 
-    if not os.path.isdir(baseline_path): raise ValueError(f"Model {model} not found on {baseline_path}")
+    # Samplees randomly one of the trained models
+    model_path = os.path.join(model_path, sample_subfolder_randomly(model_path))
+
+    if not os.path.isdir(model_path): raise ValueError(f"Model {model} not found on {model_path}")
 
     # Go through all files in args.checkpoint_path
     timesteps = []
@@ -47,14 +46,7 @@ def load_model(model:str, timestep:int=0, agent="rnn"):
         timestep_to_load = min(timesteps, key=lambda x: abs(x - timestep))
 
     model_path = os.path.join(model_path, str(timestep_to_load))
-    results = json.load(open(results_path, "r"))
 
     th_data = th.load("{}/agent.th".format(model_path), map_location=lambda storage, loc: storage)
 
-    return th_data, results
-
-
-# Some tests
-
-# model, results = load_model("3m_qmix", 0, "rnn")
-
+    return th_data

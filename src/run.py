@@ -16,7 +16,7 @@ from components.episode_buffer import ReplayBuffer
 from components.transforms import OneHot
 import psutil
 
-from transfer_learning.basic_tl import direct_transfer_weights
+from transfer_learning.methods_tl import direct_transfer_weights
 
 def run(_run, _config, _log):
 
@@ -111,7 +111,15 @@ def run_sequential(args, logger):
     mac = mac_REGISTRY[args.mac](buffer.scheme, groups, args)
 
     if args.transfer:
-        direct_transfer_weights(args.tl_args["source_maps"][0], mac)
+        # Make sure yaml file is properly configured
+        if not args.tl_args["single_source"]:
+            raise ValueError("Multiple sources not supported yet")
+        assert len(args.tl_args["source_maps"]) == 1
+
+        if args.tl_args["method"] == "direct" or args.tl_args["method"] == "direct_unfreeze":
+            direct_transfer_weights(args.tl_args["source_maps"][0], mac)
+        else:
+            pass
 
     # Give runner the scheme
     runner.setup(scheme=scheme, groups=groups, preprocess=preprocess, mac=mac)

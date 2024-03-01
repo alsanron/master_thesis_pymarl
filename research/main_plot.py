@@ -5,16 +5,12 @@ import numpy as np
 import seaborn as sns
 
 
-def listOfDict_to_listOfValues(input:list) -> list:
-    return [d["value"] for d in input]
-
 def include_plot(axes, x, y_avg, y_std=[], label=""):
     axes.plot(x, y_avg, label=label)
 
     if len(y_std):
         axes.fill_between(x, y_avg - np.array(y_std), y_avg + np.array(y_std), alpha=0.3)
         
-
 def are_same_timesteps(ts1, ts2, tolerance:int=100) -> bool:
     if len(ts1) != len(ts2):
         return False
@@ -81,8 +77,7 @@ def generate_training_figure(models:list, label:str):
     plt.show()
 
 
-
-generate_training_figure(["qmix_3m_baseline"], label="qmix_3m_baseline.png")
+generate_training_figure(["qmix_3m_baseline", "qmix_8m_baseline"], label="qmix_3m_baseline_8m.png")
 
 # generate_basic_figure(["qmix_3m_baseline"], label="3m_qmix_baseline.png")
 

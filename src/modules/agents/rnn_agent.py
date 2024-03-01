@@ -1,3 +1,4 @@
+import torch as th
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -17,9 +18,25 @@ class RNNAgent(nn.Module):
         # make hidden states on same device as model
         return self.fc1.weight.new(1, self.args.rnn_hidden_dim).zero_()
 
-    def forward(self, inputs, hidden_state):
+    def forward(self, inputs, hidden_state, freeze_rnn=False):
+
+        for param in self.rnn.parameters():
+            param.requires_grad = not freeze_rnn
+
         x = F.relu(self.fc1(inputs))
+
+        # if freeze_rnn:
+        #     with th.no_grad():
+        #         h_in = hidden_state.reshape(-1, self.args.rnn_hidden_dim)
+        #         h = self.rnn(x, h_in)
+        # else:
+        #     h_in = hidden_state.reshape(-1, self.args.rnn_hidden_dim)
+        #     h = self.rnn(x, h_in)
+
         h_in = hidden_state.reshape(-1, self.args.rnn_hidden_dim)
         h = self.rnn(x, h_in)
+
         q = self.fc2(h)
         return q, h
+
+
