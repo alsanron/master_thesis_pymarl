@@ -1,5 +1,6 @@
 /tb_logs/
 /results/
+/research/
 /3rdparty/
 *.pyc
 *.pyo

@@ -4,7 +4,7 @@ env_args:
   # params left by default as original paper
   continuing_episode: False
   difficulty: "7"
-  game_version: null
+  game_version: null # it will use the latest version
 
   move_amount: 2
   obs_all_health: True
