@@ -1,7 +1,7 @@
 # Research configuration file -> it includes those parameters more relevant
 # to the research process
 
-label: "qmix_8m_to_3m_grad_unfreeze_inf" # Label for the experiment is automatically generated
+label: "qmix_3m_to_8m_grad_unfreeze_inf" # Label for the experiment is automatically generated
 
 # Main transfer learning settings
 
@@ -12,12 +12,12 @@ t_max: 1050000 # Stop running after this many timesteps. Default: 2050000
 transfer: True # If true, transfer learning is used
 tl_args:
   single_source: True # If true, only one source is used for transfer learning
-  source_maps: ["qmix_8m_baseline"] # Maps to use for transfer learning
+  source_maps: ["qmix_3m_baseline"] # Maps to use for transfer learning
   method: "direct_unfreeze" # direct, direct_unfreeze
   unfreeze_percentage_training: 100000 # Percentage of the epsilon anneal time to unfreeze the model
 
 env_args:
-  map_name: "3m"
+  map_name: "8m"
   debug: False
 
 runner: "episode" # Runs x env for an episode
