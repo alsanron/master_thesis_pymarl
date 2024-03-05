@@ -7,6 +7,8 @@ class RNNAgent(nn.Module):
         super(RNNAgent, self).__init__()
         self.args = args
 
+        self.pad = nn.ConstantPad1d((0, 512 - input_shape), 0)
+
         self.fc1 = nn.Linear(input_shape, args.rnn_hidden_dim)
 
         # by default num_layers=1, bias=True, batch_first=False
@@ -23,15 +25,9 @@ class RNNAgent(nn.Module):
         for param in self.rnn.parameters():
             param.requires_grad = not freeze_rnn
 
-        x = F.relu(self.fc1(inputs))
+        inputs_padded = self.pad(inputs)
 
-        # if freeze_rnn:
-        #     with th.no_grad():
-        #         h_in = hidden_state.reshape(-1, self.args.rnn_hidden_dim)
-        #         h = self.rnn(x, h_in)
-        # else:
-        #     h_in = hidden_state.reshape(-1, self.args.rnn_hidden_dim)
-        #     h = self.rnn(x, h_in)
+        x = F.relu(self.fc1(inputs_padded))
 
         h_in = hidden_state.reshape(-1, self.args.rnn_hidden_dim)
         h = self.rnn(x, h_in)

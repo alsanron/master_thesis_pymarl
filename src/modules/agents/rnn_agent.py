@@ -7,7 +7,13 @@ class RNNAgent(nn.Module):
         super(RNNAgent, self).__init__()
         self.args = args
 
-        self.fc1 = nn.Linear(input_shape, args.rnn_hidden_dim)
+        if args.pad_input:
+            assert(input_shape <= args.pad_size)
+
+            self.pad = nn.ConstantPad1d((0, args.pad_size - input_shape), 0)
+            self.fc1 = nn.Linear(args.pad_size, args.rnn_hidden_dim)
+        else:
+            self.fc1 = nn.Linear(input_shape, args.rnn_hidden_dim)
 
         # by default num_layers=1, bias=True, batch_first=False
         self.rnn = nn.GRUCell(args.rnn_hidden_dim, args.rnn_hidden_dim)
@@ -23,16 +29,10 @@ class RNNAgent(nn.Module):
         for param in self.rnn.parameters():
             param.requires_grad = not freeze_rnn
 
+        inputs = self.pad(inputs) if self.args.pad_input else inputs
+
         x = F.relu(self.fc1(inputs))
-
-        # if freeze_rnn:
-        #     with th.no_grad():
-        #         h_in = hidden_state.reshape(-1, self.args.rnn_hidden_dim)
-        #         h = self.rnn(x, h_in)
-        # else:
-        #     h_in = hidden_state.reshape(-1, self.args.rnn_hidden_dim)
-        #     h = self.rnn(x, h_in)
-
+        
         h_in = hidden_state.reshape(-1, self.args.rnn_hidden_dim)
         h = self.rnn(x, h_in)
 

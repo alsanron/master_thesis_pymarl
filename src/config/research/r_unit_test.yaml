@@ -16,6 +16,9 @@ env_args:
 
 transfer: False # If true, transfer learning is used
 
+pad_input: True # If true, input is padded before RNN
+pad_size: 512 # Greater than any state vector size
+
 epsilon_start: 1 # 1:qmix, .5:coma
 epsilon_finish: 0.02 # 0.05:qmix, .01:coma
 epsilon_anneal_time: 100000 # 50000:qmix, 100000:coma
