@@ -1,35 +1,26 @@
 # Research configuration file -> it includes those parameters more relevant
 # to the research process
 
-label: "qmix_3m_to_3m_grad_unfreeze_inf" # Label for the experiment is automatically generated
-
-# Main transfer learning settings
-
-algorithm: "qmix" 
-
-t_max: 1050000 # Stop running after this many timesteps. Default: 2050000
-
-transfer: True # If true, transfer learning is used
-tl_args:
-  single_source: True # If true, only one source is used for transfer learning
-  source_maps: ["qmix_3m_baseline"] # Maps to use for transfer learning
-  method: "direct_unfreeze" # direct, direct_unfreeze
-  unfreeze_percentage_training: 100000 # Percentage of the epsilon anneal time to unfreeze the model
-
-env_args:
-  map_name: "3m"
-  debug: False
+label: "qmix_3s5z_baseline" # Label for the experiment
 
 runner: "episode" # Runs x env for an episode
 batch_size_run: 1 # Number of environments to run in parallel
 batch_size: 32 # Number of episodes to train on
-buffer_size: 5000 # Size of the replay buffer 5000:qmix, 8:coma
+buffer_size: 500 # Size of the replay buffer 5000:qmix, 8:coma
+algorithm: "qmix" 
 env: "sc2" 
+
+transfer: False # If true, transfer learning is used
+
+env_args:
+  map_name: "3s5z"
+  debug: False
 
 epsilon_start: 1 # 1:qmix, .5:coma
 epsilon_finish: 0.05 # 0.05:qmix, .01:coma
 epsilon_anneal_time: 50000 # 50000:qmix, 100000:coma
 
+t_max: 2050000 # Stop running after this many timesteps. Default: 2050000
 use_cuda: True # Use gpu by default unless it isn't available
 buffer_cpu_only: True # If true we won't keep all of the replay buffer in vram
 
@@ -43,7 +34,7 @@ learner_log_interval: 10000 # Log training stats every {} timesteps
 # --- Logging options ---
 use_tensorboard: True # Log results to tensorboard
 save_model: True # Save the models to disk
-save_model_interval: 100000 # Save models after this many timesteps
+save_model_interval: 50000 # Save models after this many timesteps
 checkpoint_path: "" # Load a checkpoint from this path
 evaluate: False # Evaluate model for test_nepisode episodes and quit (no training)
 load_step: 0 # Load model trained on this many timesteps (0 if choose max possible)
