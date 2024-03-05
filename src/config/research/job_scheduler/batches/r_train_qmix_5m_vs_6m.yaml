@@ -12,6 +12,9 @@ env: "sc2"
 
 transfer: False # If true, transfer learning is used
 
+pad_input: False # If true, input is padded before RNN
+pad_size: 512 # Greater than any state vector size
+
 env_args:
   map_name: "5m_vs_6m"
   debug: False

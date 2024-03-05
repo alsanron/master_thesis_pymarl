@@ -1,7 +1,7 @@
 # Research configuration file -> it includes those parameters more relevant
 # to the research process
 
-label: "qmix_2m_vs_1z_baseline" # Label for the experiment
+label: "qmix_3m_pad_128" # Label for the experiment
 
 runner: "episode" # Runs x env for an episode
 batch_size_run: 1 # Number of environments to run in parallel
@@ -12,18 +12,18 @@ env: "sc2"
 
 transfer: False # If true, transfer learning is used
 
-pad_input: False # If true, input is padded before RNN
-pad_size: 512 # Greater than any state vector size
+pad_input: True # If true, input is padded before RNN
+pad_size: 128 # Greater than any state vector size
 
 env_args:
-  map_name: "2m_vs_1z"
+  map_name: "3m"
   debug: False
 
 epsilon_start: 1 # 1:qmix, .5:coma
 epsilon_finish: 0.05 # 0.05:qmix, .01:coma
 epsilon_anneal_time: 50000 # 50000:qmix, 100000:coma
 
-t_max: 2050000 # Stop running after this many timesteps. Default: 2050000
+t_max: 1050000 # Stop running after this many timesteps. Default: 2050000
 use_cuda: True # Use gpu by default unless it isn't available
 buffer_cpu_only: True # If true we won't keep all of the replay buffer in vram
 
