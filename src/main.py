@@ -102,7 +102,7 @@ def create_exp_label(config):
     if config["transfer"]:
         exp_label += "_"
         if config["tl_args"]["method"] == "direct_unfreeze":
-            exp_label += "unfreeze{}".format(config["tl_args"]["unfreeze_percentage_training"]*10)
+            exp_label += "unfreeze{}".format(config["tl_args"]["unfreeze_percentage_training"])
         elif config["tl_args"]["method"] == "direct":
             exp_label += "direct"
 
@@ -151,6 +151,7 @@ if __name__ == '__main__':
     config_dict["use_cuda"] = use_cuda
 
     exp_label = config_dict["label"] if len(config_dict["label"]) > 0 else create_exp_label(config_dict)
+    config_dict["label"] = exp_label #update dictionary
 
     results_path = os.path.join(results_path, exp_label)
     os.makedirs(results_path, exist_ok=True)

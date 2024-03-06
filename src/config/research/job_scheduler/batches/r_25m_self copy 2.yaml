@@ -1,7 +1,7 @@
-# Research configuration file -> it includes those parameters more relevant
-# to the research process
+# Configuration file to test new code -> it runs a small number of episodes to test
+# that the code runs without errors
 
-label: "qmix_3m_pad_512" # Label for the experiment
+label: "" # If left empty, it will be created automatically based on config
 
 runner: "episode" # Runs x env for an episode
 batch_size_run: 1 # Number of environments to run in parallel
@@ -10,20 +10,25 @@ buffer_size: 500 # Size of the replay buffer 5000:qmix, 8:coma
 algorithm: "qmix" 
 env: "sc2" 
 
-transfer: False # If true, transfer learning is used
-
-pad_input: True # If true, input is padded before RNN
-pad_size: 512 # Greater than any state vector size
-
 env_args:
-  map_name: "3m"
+  map_name: "25m"
   debug: False
+
+transfer: True # If true, transfer learning is used
+tl_args:
+  single_source: True # If true, only one source is used for transfer learning
+  source_maps: ["25m_rnn_qmix"] # Maps to use for transfer learning
+  method: "direct_unfreeze" # direct, direct_unfreeze
+  unfreeze_percentage_training: 0.2 # Percentage of the epsilon anneal time to unfreeze the model
+
+pad_input: False # If true, input is padded before RNN
+pad_size: 512 # Greater than any state vector size
 
 epsilon_start: 1 # 1:qmix, .5:coma
 epsilon_finish: 0.05 # 0.05:qmix, .01:coma
 epsilon_anneal_time: 50000 # 50000:qmix, 100000:coma
 
-t_max: 1050000 # Stop running after this many timesteps. Default: 2050000
+t_max: 2050000 # Stop running after this many timesteps
 use_cuda: True # Use gpu by default unless it isn't available
 buffer_cpu_only: True # If true we won't keep all of the replay buffer in vram
 
