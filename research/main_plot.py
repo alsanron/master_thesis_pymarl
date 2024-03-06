@@ -23,22 +23,22 @@ def generate_training_figure(models:list, label:str):
         plt.savefig("figures/" + label)
     plt.show()
 
+# generate_training_figure(["3m_rnn_qmix", "3m_rnn-pad56_qmix", "3m_rnn-pad128_qmix", "3m_rnn-pad512_qmix"], label="3m_rnn-pad_qmix.png")
 
-# generate_training_figure(["qmix_3m_baseline", "qmix_3m_to_3m_direct", "qmix_3m_to_3m_grad_unfreeze_05"], label="qmix_3m_self_transfer.png")
-    
-# generate_training_figure(["qmix_3m_baseline", "qmix_8m_to_3m_direct", "qmix_8m_to_3m_grad_unfreeze_02", 
-#                           "qmix_8m_to_3m_grad_unfreeze_05", "qmix_8m_to_3m_grad_unfreeze_inf"], label="qmix_8m_to_3m_transfer.png")
-    
-generate_training_figure(["qmix_8m_baseline", "qmix_3m_to_8m_direct"], label="qmix_3m_8m_transfer.png")
+# generate_training_figure(["3m_rnn_qmix", "3m_from-3m_rnn_qmix_direct", "3m_from-3m_rnn_qmix_unfreeze02",
+#                           "3m_from-3m_rnn_qmix_unfreeze05", "3m_from-3m_rnn_qmix_unfreezeinf"], label="3m_selftransfer_rnn_qmix.png")
 
-# generate_training_figure(["qmix_8m_baseline"], label="8m_qmix_baseline.png")
+# generate_training_figure(["3m_rnn_qmix", "3m_from-8m_rnn_qmix_direct", "3m_from-8m_rnn_qmix_unfreeze02",
+#                           "3m_from-8m_rnn_qmix_unfreeze05", "3m_from-8m_rnn_qmix_unfreezeinf"], label="3m_from-8m_rnn_qmix.png")
 
-# generate_basic_figure(["qmix_3m_baseline"], label="3m_qmix_baseline.png")
+# generate_training_figure(["8m_rnn_qmix", "8m_rnn-pad512_qmix"], label="8m_rnn-pad_qmix.png")
 
-# generate_plot('battle_won_mean', ['baselines/3m_qmix', 'qmix_8m_to_3m'], with_std=False, show=True)
-# generate_plot('return', ['baselines/3m_qmix', 'qmix_8m_to_3m'], with_std=True, show=True)
+# generate_training_figure(["8m_rnn_qmix", "8m_from-8m_rnn_qmix_direct", "8m_from-8m_rnn_qmix_unfreeze02",
+#                           "8m_from-8m_rnn_qmix_unfreeze05", "8m_from-8m_rnn_qmix_unfreezeinf"], label="8m_selftransfer_rnn_qmix.png")
 
-# generate_plot('test_battle_won_mean', ['baselines/3m_qmix', 'qmix_8m_to_3m'], with_std=False, show=True)
-# generate_plot('test_return', ['baselines/3m_qmix', 'qmix_8m_to_3m'], with_std=True, show=True)
+# generate_training_figure(["8m_rnn_qmix", "8m_from-3m_rnn_qmix_direct", "8m_from-3m_rnn_qmix_unfreeze02",
+#                           "8m_from-3m_rnn_qmix_unfreeze05", "8m_from-3m_rnn_qmix_unfreezeinf"], label="8m_from-3m_rnn_qmix.png")
 
+# generate_training_figure(["25m_rnn_qmix"], label="25m_rnn_qmix.png")
 
+# generate_training_figure(["3s_vs_3z_rnn_qmix"], label="3s_vs_3z_rnn_qmix.png")

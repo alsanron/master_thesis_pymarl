@@ -80,6 +80,35 @@ def config_copy(config):
         return [config_copy(v) for v in config]
     else:
         return deepcopy(config)
+    
+def create_exp_label(config):
+    exp_label = ""
+    exp_label += config["env_args"]["map_name"] + "_"
+
+    if config["transfer"]:
+        exp_label += "from"
+
+        for source_map in config["tl_args"]["source_maps"]:
+            exp_label += "-" + source_map.split("_")[0] 
+        exp_label += "_"
+
+    exp_label += config["agent"] 
+    if config["pad_input"]:
+        exp_label += "-pad{}".format(config["pad_size"])
+    exp_label += "_"
+
+    exp_label += config["algorithm"] 
+
+    if config["transfer"]:
+        exp_label += "_"
+        if config["tl_args"]["method"] == "direct_unfreeze":
+            exp_label += "unfreeze{}".format(config["tl_args"]["unfreeze_percentage_training"]*10)
+        elif config["tl_args"]["method"] == "direct":
+            exp_label += "direct"
+
+    return exp_label
+
+
 
 
 if __name__ == '__main__':
@@ -121,7 +150,8 @@ if __name__ == '__main__':
 
     config_dict["use_cuda"] = use_cuda
 
-    exp_label = config_dict["label"]
+    exp_label = config_dict["label"] if len(config_dict["label"]) > 0 else create_exp_label(config_dict)
+
     results_path = os.path.join(results_path, exp_label)
     os.makedirs(results_path, exist_ok=True)
 
