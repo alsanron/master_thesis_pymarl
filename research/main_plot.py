@@ -28,17 +28,18 @@ def generate_training_figure(models:list, label:str):
 # generate_training_figure(["3m_rnn_qmix", "3m_from-3m_rnn_qmix_direct", "3m_from-3m_rnn_qmix_unfreeze02",
 #                           "3m_from-3m_rnn_qmix_unfreeze05", "3m_from-3m_rnn_qmix_unfreezeinf"], label="3m_selftransfer_rnn_qmix.png")
 
-# generate_training_figure(["3m_rnn_qmix", "3m_from-8m_rnn_qmix_direct", "3m_from-8m_rnn_qmix_unfreeze02",
-#                           "3m_from-8m_rnn_qmix_unfreeze05", "3m_from-8m_rnn_qmix_unfreezeinf"], label="3m_from-8m_rnn_qmix.png")
+# generate_training_figure(["3m_rnn_qmix", "3m_from-8m_rnn_qmix_direct", "3m_from-8m_rnn_qmix_unfreeze0.2",
+#                           "3m_from-8m_rnn_qmix_unfreeze0.5", "3m_from-8m_rnn_qmix_unfreezeinf", "3m_from-8m_rnn-pad512_qmix_unfreeze0.2"], label="3m_from-8m_rnn_qmix.png")
 
 # generate_training_figure(["8m_rnn_qmix", "8m_rnn-pad512_qmix"], label="8m_rnn-pad_qmix.png")
 
 # generate_training_figure(["8m_rnn_qmix", "8m_from-8m_rnn_qmix_direct", "8m_from-8m_rnn_qmix_unfreeze02",
 #                           "8m_from-8m_rnn_qmix_unfreeze05", "8m_from-8m_rnn_qmix_unfreezeinf"], label="8m_selftransfer_rnn_qmix.png")
 
-# generate_training_figure(["8m_rnn_qmix", "8m_from-3m_rnn_qmix_direct", "8m_from-3m_rnn_qmix_unfreeze02",
-#                           "8m_from-3m_rnn_qmix_unfreeze05", "8m_from-3m_rnn_qmix_unfreezeinf"], label="8m_from-3m_rnn_qmix.png")
+# generate_training_figure(["8m_rnn_qmix", "8m_from-3m_rnn_qmix_direct", "8m_from-3m_rnn_qmix_unfreeze0.2",
+#                           "8m_from-3m_rnn_qmix_unfreeze0.5", "8m_from-3m_rnn_qmix_unfreezeinf", "8m_from-3m_rnn-pad512_qmix_unfreeze0.2"
+#                           ], label="8m_from-3m_rnn_qmix.png")
 
 # generate_training_figure(["25m_rnn_qmix"], label="25m_rnn_qmix.png")
 
-# generate_training_figure(["3s_vs_3z_rnn_qmix"], label="3s_vs_3z_rnn_qmix.png")
+generate_training_figure(["2m_vs_1z_rnn_qmix"], label="2m_vs_1z_rnn_qmix.png")
