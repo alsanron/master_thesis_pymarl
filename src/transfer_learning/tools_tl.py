@@ -6,15 +6,17 @@ import random
 
 data_path = os.path.join(dirname(dirname(dirname(abspath(__file__)))), "research", "data")
 
-def extract_gru_params(state_dict):
+def extract_layer_params(state_dict, layer_name):
     # Extract the GRU parameters from the state_dict
-    gru_params = {}
+    layer_params = {}
     for name, param in state_dict.items():
-        if "rnn" in name:
-            name = name.split("rnn.")[1]
-            gru_params[name] = param
+        if layer_name in name:
+            name = name.split("{}.".format(layer_name))[1]
+            layer_params[name] = param
 
-    return gru_params
+    return layer_params
+
+
 
 def sample_subfolder_randomly(model_path):
     subfolders = [f for f in os.listdir(model_path) if os.path.isdir(os.path.join(model_path, f))]

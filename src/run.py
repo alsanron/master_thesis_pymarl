@@ -117,7 +117,7 @@ def run_sequential(args, logger):
         assert len(args.tl_args["source_maps"]) == 1
 
         if args.tl_args["method"] == "direct" or args.tl_args["method"] == "direct_unfreeze":
-            direct_transfer_weights(args.tl_args["source_maps"][0], mac)
+            direct_transfer_weights(args.tl_args["source_maps"][0], mac, args.pad_input)
         else:
             pass
 
