@@ -1,7 +1,7 @@
 # Research configuration file -> it includes those parameters more relevant
 # to the research process
 
-label: "" # Label for the experiment is automatically generated
+label: "r_unit_transfer" # Label for the experiment is automatically generated
 
 # Main transfer learning settings
 
@@ -12,11 +12,12 @@ t_max: 10005 # Stop running after this many timesteps. Default: 2050000
 transfer: True # If true, transfer learning is used
 tl_args:
   single_source: True # If true, only one source is used for transfer learning
-  source_maps: ["8m_rnn_qmix"] # Maps to use for transfer learning
+  source_maps: ["8m_rnn-pad512_qmix"] # Maps to use for transfer learning
   method: "direct_unfreeze" # direct, direct_unfreeze
   unfreeze_percentage_training: 2 # Percentage of the epsilon anneal time to unfreeze the model
 
-pad_input: False
+pad_input: True
+pad_size: 512
 
 env_args:
   map_name: "3m"
