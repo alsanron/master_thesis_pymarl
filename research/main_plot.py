@@ -41,6 +41,22 @@ def generate_training_figure(models:list, label:str):
 #                           "8m_from-3m_rnn-pad512_qmix_unfreeze0.2"
 #                           ], label="8m_from-3m_rnn_qmix.png")
 
-generate_training_figure(["25m_rnn_qmix", "25m_from-25m_rnn_qmix_unfreeze0.2"], label="25m_rnn_qmix.png")
+# generate_training_figure(["25m_rnn_qmix"], label="25m_rnn_qmix.png")
+
+# generate_training_figure(["25m_from-8m_rnn_qmix_unfreeze0.2"], label="trash_25m_rnn_qmix.png")
+
+# generate_training_figure(["2m_vs_1z_rnn_qmix"], label="2m_vs_1z_rnn_qmix.png")
+
+# generate_training_figure(["2s3z_rnn_qmix"], label="2s3z_rnn_qmix.png")
+
+# generate_training_figure(["3s_vs_3z_rnn_qmix"], label="3s_vs_3z_rnn_qmix.png")
+
+# generate_training_figure(["3s_vs_4z_rnn_qmix"], label="3s_vs_4z_rnn_qmix.png")
+
+# generate_training_figure(["3s5z_rnn_qmix"], label="3s5z_rnn_qmix.png")
+
+generate_training_figure(["5m_vs_6m_rnn_qmix"], label="5m_vs_6m_rnn_qmix.png")
+
+# generate_training_figure(["6h_vs_8z_rnn_qmix"], label="6h_vs_8z_rnn_qmix.png")
 
 # generate_training_figure(["2m_vs_1z_rnn_qmix"], label="2m_vs_1z_rnn_qmix.png")
