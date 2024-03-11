@@ -52,6 +52,9 @@ def load_data(model:str):
 
     for variable in variables:
         if variable in data:
+            min_length = min(len(arr) for arr in data[variable])
+            data[variable] = np.array([arr[:min_length] for arr in data[variable]])
+            data[variable + "_T"] = data[variable + "_T"][:min_length]
             data[variable + "_avg"] = np.average(data[variable], axis=0)
             data[variable + "_std"] = np.std(data[variable], axis=0)
 
