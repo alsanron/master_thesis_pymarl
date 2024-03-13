@@ -14,7 +14,9 @@ from runners import REGISTRY as r_REGISTRY
 from controllers import REGISTRY as mac_REGISTRY
 from components.episode_buffer import ReplayBuffer
 from components.transforms import OneHot
+import psutil
 
+from transfer_learning.methods_tl import direct_transfer_weights
 
 def run(_run, _config, _log):
 
@@ -33,11 +35,13 @@ def run(_run, _config, _log):
                                        width=1)
     _log.info("\n\n" + experiment_params + "\n")
 
+    exp_label = _config["label"]
+
     # configure tensorboard logger
     unique_token = "{}__{}".format(args.name, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
     args.unique_token = unique_token
     if args.use_tensorboard:
-        tb_logs_direc = os.path.join(dirname(dirname(abspath(__file__))), "results", "tb_logs")
+        tb_logs_direc = os.path.join(dirname(dirname(abspath(__file__))), "results", exp_label, "tb_logs")
         tb_exp_direc = os.path.join(tb_logs_direc, "{}").format(unique_token)
         logger.setup_tb(tb_exp_direc)
 
@@ -56,9 +60,7 @@ def run(_run, _config, _log):
             print("Thread {} is alive! Is daemon: {}".format(t.name, t.daemon))
             t.join(timeout=1)
             print("Thread joined")
-
-    print("Exiting script")
-
+    
     # Making sure framework really exits
     os._exit(os.EX_OK)
 
@@ -72,6 +74,7 @@ def evaluate_sequential(args, runner):
         runner.save_replay()
 
     runner.close_env()
+    
 
 def run_sequential(args, logger):
 
@@ -107,6 +110,17 @@ def run_sequential(args, logger):
     # Setup multiagent controller here
     mac = mac_REGISTRY[args.mac](buffer.scheme, groups, args)
 
+    if args.transfer:
+        # Make sure yaml file is properly configured
+        if not args.tl_args["single_source"]:
+            raise ValueError("Multiple sources not supported yet")
+        assert len(args.tl_args["source_maps"]) == 1
+
+        if args.tl_args["method"] == "direct" or args.tl_args["method"] == "direct_unfreeze":
+            direct_transfer_weights(args.tl_args["source_maps"][0], mac, args.pad_input)
+        else:
+            pass
+
     # Give runner the scheme
     runner.setup(scheme=scheme, groups=groups, preprocess=preprocess, mac=mac)
 
@@ -122,7 +136,7 @@ def run_sequential(args, logger):
         timestep_to_load = 0
 
         if not os.path.isdir(args.checkpoint_path):
-            logger.console_logger.info("Checkpoint directiory {} doesn't exist".format(args.checkpoint_path))
+            logger.console_logger.info("Checkpoint directory {} doesn't exist".format(args.checkpoint_path))
             return
 
         # Go through all files in args.checkpoint_path
@@ -148,6 +162,8 @@ def run_sequential(args, logger):
         if args.evaluate or args.save_replay:
             evaluate_sequential(args, runner)
             return
+        
+    get_system_resources() # it needs to be called once in the beggining to reset values
 
     # start training
     episode = 0
@@ -193,7 +209,7 @@ def run_sequential(args, logger):
 
         if args.save_model and (runner.t_env - model_save_time >= args.save_model_interval or model_save_time == 0):
             model_save_time = runner.t_env
-            save_path = os.path.join(args.local_results_path, "models", args.unique_token, str(runner.t_env))
+            save_path = os.path.join(args.local_results_path, args.label, "models", args.unique_token, str(runner.t_env))
             #"results/models/{}".format(unique_token)
             os.makedirs(save_path, exist_ok=True)
             logger.console_logger.info("Saving models to {}".format(save_path))
@@ -206,9 +222,16 @@ def run_sequential(args, logger):
 
         if (runner.t_env - last_log_T) >= args.log_interval:
             logger.log_stat("episode", episode, runner.t_env)
+            
+            cpu_usage, memory_usage = get_system_resources()
+            logger.log_stat("cpu_usage", cpu_usage, runner.t_env)
+            logger.log_stat("memory_usage", memory_usage, runner.t_env)
+
+            logger.log_stat("wall_time_min", (time.time() - start_time)/60, runner.t_env)
+
             logger.print_recent_stats()
             last_log_T = runner.t_env
-
+    
     runner.close_env()
     logger.console_logger.info("Finished Training")
 
@@ -227,3 +250,14 @@ def args_sanity_check(config, _log):
         config["test_nepisode"] = (config["test_nepisode"]//config["batch_size_run"]) * config["batch_size_run"]
 
     return config
+
+
+
+def get_system_resources() -> tuple:
+    # Get the current CPU usage as a percentage
+    cpu_usage = psutil.cpu_percent(interval=None, percpu=False)
+
+    # Get the current memory usage as a percentage
+    memory_usage = psutil.virtual_memory().percent
+
+    return cpu_usage, memory_usage
