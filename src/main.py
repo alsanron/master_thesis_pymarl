@@ -81,6 +81,7 @@ def config_copy(config):
     else:
         return deepcopy(config)
     
+    
 def create_exp_label(config):
     exp_label = ""
     exp_label += config["env_args"]["map_name"] + "_"
@@ -105,6 +106,9 @@ def create_exp_label(config):
             exp_label += "unfreeze{}".format(config["tl_args"]["unfreeze_percentage_training"])
         elif config["tl_args"]["method"] == "direct":
             exp_label += "direct"
+
+        if len(config["tl_args"]["source_maps"]) > 1:
+            exp_label += "_{}".format(config["tl_args"]["policy_distillation"])
 
     return exp_label
 

@@ -16,7 +16,7 @@ from components.episode_buffer import ReplayBuffer
 from components.transforms import OneHot
 import psutil
 
-from transfer_learning.methods_tl import direct_transfer_weights
+from transfer_learning.methods_tl import direct_single_transfer_weights, direct_multiple_transfer_weights
 
 def run(_run, _config, _log):
 
@@ -111,15 +111,17 @@ def run_sequential(args, logger):
     mac = mac_REGISTRY[args.mac](buffer.scheme, groups, args)
 
     if args.transfer:
-        # Make sure yaml file is properly configured
-        if not args.tl_args["single_source"]:
-            raise ValueError("Multiple sources not supported yet")
-        assert len(args.tl_args["source_maps"]) == 1
-
-        if args.tl_args["method"] == "direct" or args.tl_args["method"] == "direct_unfreeze":
-            direct_transfer_weights(args.tl_args["source_maps"][0], mac, args.pad_input)
+        if len(args.tl_args["source_maps"]) == 1:
+            if args.tl_args["method"] == "direct" or args.tl_args["method"] == "direct_unfreeze":
+                direct_single_transfer_weights(args.tl_args["source_maps"][0], mac, args.pad_input)
+            else:
+                raise ValueError("Method not supported yet")
         else:
-            pass
+            if args.tl_args["method"] == "direct" or args.tl_args["method"] == "direct_unfreeze":
+                direct_multiple_transfer_weights(args.tl_args["source_maps"], mac, args.tl_args["policy_distillation"],
+                                                  args.pad_input)
+            else:
+                raise ValueError("Method not supported yet")
 
     # Give runner the scheme
     runner.setup(scheme=scheme, groups=groups, preprocess=preprocess, mac=mac)
