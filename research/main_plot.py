@@ -1,18 +1,40 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from plt_tools import include_plot, load_data
+from plt_tools import include_plot_mean, include_plot_median, load_data
+from tl_metrics import auc_ratio
 
-def generate_training_figure(models:list, label:str, only_last_legend:bool=False):
-    fig, axes = plt.subplots(4, 2, figsize=(20, 8))
-    variables = ['battle_won_mean', 'test_battle_won_mean', 'return_mean', 'test_return_mean', 'ep_length_mean', 'epsilon', 'loss', 'wall_time_min']
+
+def generate_training_figure(models:list, label:str, only_last_legend:bool=False, baseline:str=None, median:bool=False):
+    fig, axes = plt.subplots(2, 2, figsize=(20, 8))
+    variables = ['battle_won_mean', 'test_battle_won_mean', 'return_mean', 'test_return_mean', 
+                #  'ep_length_mean', 'epsilon', 'loss', 'wall_time_min'
+                 ]
+
+    data_list = []; ratios_auc = []
+    for model in models:
+        data_list.append(load_data(model, median=median))
+
+        if baseline:
+            ratios_auc.append(auc_ratio(baseline, [model], "battle_won_mean", "trapezoid", median=median)[0])
+
     
     for i, variable in enumerate(variables):
         ax = axes[i // 2, i % 2]
-        for model in models:
-            data = load_data(model)
 
-            if variable in data:
-                include_plot(ax, data[variable + '_T'], data[variable + "_avg"], data[variable + "_std"], label=model)
+        for ii in range(len(models)):
+            if variable in data_list[ii]:
+                label_plot = models[ii] + f" ({ratios_auc[ii]:.2f})" if baseline else models[ii]
+
+                if median:
+                    include_plot_median(ax, data_list[ii][variable + '_T'], 
+                                 data_list[ii][variable + "_median"], 
+                                 data_list[ii][variable + "_p25"],
+                                  data_list[ii][variable + "_p75"], label=label_plot)
+                else:
+                    include_plot_mean(ax, data_list[ii][variable + '_T'], 
+                                 data_list[ii][variable + "_avg"], 
+                                 data_list[ii][variable + "_std"], label=label_plot)
+                
         ax.grid()
         ax.set_xlabel('Timesteps')
         ax.set_ylabel(variable)

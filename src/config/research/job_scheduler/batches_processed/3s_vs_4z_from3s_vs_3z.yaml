@@ -18,7 +18,7 @@ transfer: True # If true, transfer learning is used
 tl_args:
   single_source: True # If true, only one source is used for transfer learning
   source_maps: ["3s_vs_3z_rnn_qmix"] # Maps to use for transfer learning
-  method: "direct_unfreeze" # direct, direct_unfreeze
+  method: "direct" # direct, direct_unfreeze
   unfreeze_percentage_training: 0.2 # Percentage of the epsilon anneal time to unfreeze the model
 
 pad_input: False # If true, input is padded before RNN
