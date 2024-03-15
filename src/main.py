@@ -110,6 +110,9 @@ def create_exp_label(config):
         if len(config["tl_args"]["source_maps"]) > 1:
             exp_label += "_{}".format(config["tl_args"]["policy_distillation"])
 
+    if config["epsilon_exp"]:
+        exp_label += "_s{}f{}t{}".format(config["epsilon_start"], config["epsilon_finish"], config["epsilon_anneal_time"])
+
     return exp_label
 
 
