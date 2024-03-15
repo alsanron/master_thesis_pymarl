@@ -38,7 +38,6 @@ generate_training_figure(["8m_rnn_qmix", "8m_from-3m_rnn_qmix_unfreeze0.2",
 #                           only_last_legend=True, baseline="5m_vs_6m_rnn_qmix", median=True)
 
 
-
 ############ BLOCK 2 ############
 # generate_training_figure(["2s3z_rnn_qmix", "2s3z_from-3m_rnn_qmix_unfreeze0.2", "2s3z_from-3s5z_rnn_qmix_unfreeze0.2",
 #                           ], label="tl_qmix/2s3z_rnn_qmix.png", only_last_legend=True, 
