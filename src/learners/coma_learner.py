@@ -40,6 +40,17 @@ class COMALearner:
         mask[:, 1:] = mask[:, 1:] * (1 - terminated[:, :-1])
         avail_actions = batch["avail_actions"][:, :-1]
 
+        # Calculate Transfer Learning parameters
+        freeze = False
+        if self.args.transfer:
+            if self.args.tl_args["method"] == "direct":
+                pass # No need to do anything
+            elif self.args.tl_args["method"] == "direct_unfreeze":
+                unfreeze_timestep = self.args.epsilon_anneal_time * self.args.tl_args["unfreeze_percentage_training"]
+                freeze = t_env < unfreeze_timestep
+            else:
+                raise ValueError("Method {} not recognised.".format(self.args.tl_args["method"])) 
+
         critic_mask = mask.clone()
 
         mask = mask.repeat(1, 1, self.n_agents).view(-1)
@@ -52,7 +63,7 @@ class COMALearner:
         mac_out = []
         self.mac.init_hidden(batch.batch_size)
         for t in range(batch.max_seq_length - 1):
-            agent_outs = self.mac.forward(batch, t=t)
+            agent_outs = self.mac.forward(batch, t=t, freeze_rnn=freeze)
             mac_out.append(agent_outs)
         mac_out = th.stack(mac_out, dim=1)  # Concat over time
 

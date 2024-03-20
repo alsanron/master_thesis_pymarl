@@ -1,7 +1,7 @@
 # Research configuration file -> it includes those parameters more relevant
 # to the research process
 
-label: "r_unit_transfer" # Label for the experiment is automatically generated
+label: "r_unit_test_transfer" # Label for the experiment is automatically generated
 
 # Main transfer learning settings
 
@@ -11,8 +11,8 @@ t_max: 10005 # Stop running after this many timesteps. Default: 2050000
 
 transfer: True # If true, transfer learning is used
 tl_args:
-  single_source: False # If true, only one source is used for transfer learning
-  source_maps: ["3m_rnn_qmix", "8m_rnn_qmix"] # Maps to use for transfer learning
+  single_source: True # If true, only one source is used for transfer learning
+  source_maps: ["baselines/3m_rnn_qmix"] # Maps to use for transfer learning
   method: "direct_unfreeze" # direct, direct_unfreeze
   unfreeze_percentage_training: 0.2 # Percentage of the epsilon anneal time to unfreeze the model
   policy_distillation: "additive" # defines how different weights are combined
@@ -30,6 +30,7 @@ batch_size: 32 # Number of episodes to train on
 buffer_size: 500 # Size of the replay buffer 5000:qmix, 8:coma
 env: "sc2" 
 
+epsilon_exp: False
 epsilon_start: 1 # 1:qmix, .5:coma
 epsilon_finish: 1 # 0.05:qmix, .01:coma
 epsilon_anneal_time: 2000 # 50000:qmix, 100000:coma

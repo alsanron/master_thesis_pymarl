@@ -1,65 +1,32 @@
-import pandas as pd
-import numpy as np
+import json
 from plt_tools import load_data
-from tl_metrics import auc_ratio
+from tl_metrics import jumpstart, auc, auc_ratio, asymptotic
 
-# List of file paths to read
-file_paths = ['/path/to/file1.csv', '/path/to/file2.csv', '/path/to/file3.csv']
 
-# Create an empty DataFrame to store the data
-data = pd.DataFrame()
+def load_config(model_path:str):
+    with open("data/" + model_path + "/sacred/1/config.json", "r") as f:
+        config = json.load(f)
+    return config
 
-# Read each file and append the data to the DataFrame
-for file_path in file_paths:
-    df = pd.read_csv(file_path)
-    data = data.append(df)
+def create_csv_line(config, results):
+    line = ""
 
-# Save the data to an ods format file
-output_file_path = '/path/to/output.ods'
-data.to_excel(output_file_path, engine='odf')
+    line += 
 
-def generate_training_figure(models:list, label:str, only_last_legend:bool=False, baseline:str=None, median:bool=False):
-    fig, axes = plt.subplots(2, 2, figsize=(20, 8))
-    variables = ['battle_won_mean', 'test_battle_won_mean', 'return_mean', 'test_return_mean', 
-                #  'ep_length_mean', 'epsilon', 'loss', 'wall_time_min'
-                 ]
+model_path = "baselines/3m_rnn_qmix"
 
-    data_list = []; ratios_auc = []
-    for model in models:
-        data_list.append(load_data(model, median=median))
+config = load_config(model_path)
 
-        if baseline:
-            ratios_auc.append(auc_ratio(baseline, [model], "battle_won_mean", "trapezoid", median=median)[0])
+jumpstart_val = jumpstart(model_path, variable="return_mean", median=True)
+asymptotic_val = asymptotic(model_path, variable="return_mean", median=True)
+auc_rewards = auc(model_path, variable="return_mean", method="trapezoid", median=True)
+auc_bwm = auc(model_path, variable="battle_won_mean", method="trapezoid", median=True)
+total_wall_time = asymptotic(model_path, variable="wall_time_min", median=True)
 
-    
-    for i, variable in enumerate(variables):
-        ax = axes[i // 2, i % 2]
+results_grouped = {"jumpstart": jumpstart_val, 
+                "asymptotic": asymptotic_val, 
+                "auc_rewards": auc_rewards, 
+                "auc_bwm": auc_bwm, 
+                "total_wall_time": total_wall_time}
 
-        for ii in range(len(models)):
-            if variable in data_list[ii]:
-                label_plot = models[ii] + f" ({ratios_auc[ii]:.2f})" if baseline else models[ii]
-
-                if median:
-                    include_plot_median(ax, data_list[ii][variable + '_T'], 
-                                 data_list[ii][variable + "_median"], 
-                                 data_list[ii][variable + "_p25"],
-                                  data_list[ii][variable + "_p75"], label=label_plot)
-                else:
-                    include_plot_mean(ax, data_list[ii][variable + '_T'], 
-                                 data_list[ii][variable + "_avg"], 
-                                 data_list[ii][variable + "_std"], label=label_plot)
-                
-        ax.grid()
-        ax.set_xlabel('Timesteps')
-        ax.set_ylabel(variable)
-
-        if only_last_legend:
-            if i == len(variables) - 1:
-                ax.legend()
-        else:
-            ax.legend()
-    
-    plt.tight_layout()
-    if label:
-        plt.savefig("figures/" + label)
-    plt.show()
+print(config)

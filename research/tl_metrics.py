@@ -4,10 +4,34 @@ from plt_tools import load_data
 
 REG_methods = {"trapezoid": trapezoid, "cumulative_trapezoid": cumulative_trapezoid}
 
+def jumpstart(model:str, variable:str="return_mean", median:bool=False):
+    data = load_data(model, median=median)
 
-def calculate_auc(model:str,
+    if variable not in data: raise ValueError(f"Variable {variable} not found in data for model {model}")
+
+    if median:
+        jumpstart_val = data[variable + "_median"][0]
+    else:
+        jumpstart_val = data[variable + "_avg"][0]
+
+    return jumpstart_val
+
+def asymptotic(model:str, variable:str="return_mean", median:bool=False):
+    data = load_data(model, median=median)
+
+    if variable not in data: raise ValueError(f"Variable {variable} not found in data for model {model}")
+
+    if median:
+        jumpstart_val = data[variable + "_median"][-1]
+    else:
+        jumpstart_val = data[variable + "_avg"][-1]
+
+    return jumpstart_val
+
+
+def auc(model:str,
                   variable:str="battle_won_mean", # variable to calculate the AUC for
-                  method:str = "cumulative_trapezoid",
+                  method:str = "trapezoid",
                   median:bool=False
                   ):
     
@@ -25,11 +49,11 @@ def calculate_auc(model:str,
 
 def auc_ratio(source:str, targets:list, variable:str="battle_won_mean", method:str = "trapezoid", 
               print_results:bool = True, median:bool=False):
-    AUC_source = calculate_auc(source, variable, method, median=median)
+    AUC_source = auc(source, variable, method, median=median)
 
     AUC_ratios = []
     for target in targets:
-        AUC_target = calculate_auc(target, variable, method, median=median)
+        AUC_target = auc(target, variable, method, median=median)
         AUC_ratios.append((AUC_target - AUC_source) / AUC_target)
 
     if print_results:

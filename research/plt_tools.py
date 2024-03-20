@@ -17,7 +17,6 @@ def include_plot_median(axes, x, y_med, y_p25=[], y_p75=[], label=""):
     if len(y_p25):
         axes.fill_between(x, y_p25, y_p75, alpha=0.3)
 
-
         
 def are_same_timesteps(ts1, ts2, tolerance:int=100) -> bool:
     if len(ts1) != len(ts2):
@@ -26,7 +25,7 @@ def are_same_timesteps(ts1, ts2, tolerance:int=100) -> bool:
     diff = 0
     for i in range(len(ts1)):
         diff += abs(ts1[i] - ts2[i])
-    diff /= len(ts1)
+    diff /= len(ts1)        
 
     return diff < tolerance
 
