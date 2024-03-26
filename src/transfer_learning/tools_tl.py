@@ -23,7 +23,7 @@ def sample_subfolder_randomly(model_path):
     return random.choice(subfolders)
 
 
-def load_model(model:str, timestep:int=0, agent="rnn"):
+def load_model(model:str, timestep:int=0, timestep_tolerance:int=1000, agent="rnn"):
     # Define the path to the baseline model based on the model 
     model_path = f"{data_path}/{model}/models"
 
@@ -40,12 +40,14 @@ def load_model(model:str, timestep:int=0, agent="rnn"):
         if os.path.isdir(full_name) and name.isdigit():
             timesteps.append(int(name))
 
-    if timestep == 0:
+    if timestep == -1:
         # choose the max timestep
         timestep_to_load = max(timesteps)
     else:
         # choose the timestep closest to load_step
         timestep_to_load = min(timesteps, key=lambda x: abs(x - timestep))
+        if timestep_to_load - timestep > timestep_tolerance:
+            raise ValueError("No model found within tolerance")
 
     model_path = os.path.join(model_path, str(timestep_to_load))
 

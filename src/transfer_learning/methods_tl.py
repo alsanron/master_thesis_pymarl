@@ -1,11 +1,13 @@
 from transfer_learning.tools_tl import load_model, extract_layer_params
+import os
+
 
 # Directly transfer the weights from one model to another
-def direct_single_transfer_weights(source_model:list, 
+def direct_single_transfer_weights(source_model:list, timestep:int,
                      target_model, # it should be one of the MAC controllers
                      pad_input:bool=False,
                      ):
-    th_params = load_model(source_model, timestep=0)
+    th_params = load_model(source_model, timestep=timestep, timestep_tolerance=1000)
 
     fc1_params = extract_layer_params(th_params, "fc1")
 
@@ -21,14 +23,15 @@ def direct_single_transfer_weights(source_model:list,
 
 
 # Directly transfer the weights from one model to another
-def direct_multiple_transfer_weights(source_models:list, 
+def direct_multiple_transfer_weights(source_models:list, timesteps:list,
                      target_model, # it should be one of the MAC controllers
                      policy_distillation:str,
-                     pad_input:bool=False,
+                     pad_input:bool=False
                      ):
+
     th_params = []; fc1_params = []; gru_params = []
-    for model in source_models:
-        th_params.append(load_model(model, timestep=0))
+    for model, timestep in zip(source_models, timesteps):
+        th_params.append(load_model(model, timestep=timestep, timestep_tolerance=1000))
         fc1_params.append(extract_layer_params(th_params[-1], "fc1"))
         gru_params.append(extract_layer_params(th_params[-1], "rnn"))
 

@@ -42,9 +42,9 @@ def load_data(model:str, median:bool=False):
                  'ep_length_mean', 'epsilon', 'loss', 'q_taken_mean', 'wall_time_min']
     data = {}
 
-    for file in os.listdir("data/" + model + "/sacred"):
+    for file in os.listdir(model + "/sacred"):
         if file.isnumeric():
-            data_temp = json.load(open("data/" + model + "/sacred/" + file + "/info.json"))
+            data_temp = json.load(open(model + "/sacred/" + file + "/info.json"))
             for variable in variables:
                 if variable in data_temp:
                     if not variable in data:

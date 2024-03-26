@@ -1,6 +1,7 @@
 /tb_logs/
 /results/
 /research/data/
+/research/old/
 /research/data_classified/
 /3rdparty/
 *.pyc

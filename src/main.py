@@ -89,8 +89,9 @@ def create_exp_label(config):
     if config["transfer"]:
         exp_label += "from"
 
-        for source_map in config["tl_args"]["source_maps"]:
-            exp_label += "-" + source_map.split("_")[0] 
+        for source_map, source_weight in zip(config["tl_args"]["source_maps"], config["tl_args"]["source_weights"]):
+            if "baselines" in source_map: source_map = source_map.split("/")[1]
+            exp_label += "-{}t{}".format(source_weight, source_map.split("_")[0] )
         exp_label += "_"
 
     exp_label += config["agent"] 
@@ -106,7 +107,7 @@ def create_exp_label(config):
             exp_label += "unfreeze{}".format(config["tl_args"]["unfreeze_percentage_training"])
         elif config["tl_args"]["method"] == "direct":
             exp_label += "direct"
-
+        
         if len(config["tl_args"]["source_maps"]) > 1:
             exp_label += "_{}".format(config["tl_args"]["policy_distillation"])
 

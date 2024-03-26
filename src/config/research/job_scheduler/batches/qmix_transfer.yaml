@@ -11,20 +11,22 @@ algorithm: "qmix"
 env: "sc2" 
 
 env_args:
-  map_name: "6h_vs_8z"
+  map_name: "8m"
   debug: False
 
 transfer: True # If true, transfer learning is used
 tl_args:
-  single_source: False # If true, only one source is used for transfer learning
-  source_maps: ["3m_rnn_qmix", "3s_vs_3z_rnn_qmix", "2m_vs_1z_rnn_qmix"] # Maps to use for transfer learning
+  single_source: True # If true, only one source is used for transfer learning
+  source_maps: ["baselines/3m_rnn_qmix"] # Maps to use for transfer learning
+  source_weights: [100000] # Timestamp of weights to use for transfer learning. -1 means latest
   method: "direct_unfreeze" # direct, direct_unfreeze
   unfreeze_percentage_training: 0.2 # Percentage of the epsilon anneal time to unfreeze the model
-  policy_distillation: "mean" # defines how different weights are combined
+  policy_distillation: "mean" # defines how different weights are combined. Only active if single_source is False
 
 pad_input: False # If true, input is padded before RNN
 pad_size: 512 # Greater than any state vector size
 
+epsilon_exp: True
 epsilon_start: 1 # 1:qmix, .5:coma
 epsilon_finish: 0.05 # 0.05:qmix, .01:coma
 epsilon_anneal_time: 50000 # 50000:qmix, 100000:coma
@@ -43,7 +45,7 @@ learner_log_interval: 10000 # Log training stats every {} timesteps
 # --- Logging options ---
 use_tensorboard: True # Log results to tensorboard
 save_model: True # Save the models to disk
-save_model_interval: 50000 # Save models after this many timesteps
+save_model_interval: 100000 # Save models after this many timesteps
 checkpoint_path: "" # Load a checkpoint from this path
 evaluate: False # Evaluate model for test_nepisode episodes and quit (no training)
 load_step: 0 # Load model trained on this many timesteps (0 if choose max possible)

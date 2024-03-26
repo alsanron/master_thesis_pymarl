@@ -111,17 +111,17 @@ def run_sequential(args, logger):
     mac = mac_REGISTRY[args.mac](buffer.scheme, groups, args)
 
     if args.transfer:
+        assert args.tl_args["method"] == "direct" or args.tl_args["method"] == "direct_unfreeze"
+
         if len(args.tl_args["source_maps"]) == 1:
-            if args.tl_args["method"] == "direct" or args.tl_args["method"] == "direct_unfreeze":
-                direct_single_transfer_weights(args.tl_args["source_maps"][0], mac, args.pad_input)
-            else:
-                raise ValueError("Method not supported yet")
+            assert args.tl_args["single_source"] == True
+            direct_single_transfer_weights(args.tl_args["source_maps"][0], args.tl_args["source_weights"][0], mac, args.pad_input)
+
         else:
-            if args.tl_args["method"] == "direct" or args.tl_args["method"] == "direct_unfreeze":
-                direct_multiple_transfer_weights(args.tl_args["source_maps"], mac, args.tl_args["policy_distillation"],
-                                                  args.pad_input)
-            else:
-                raise ValueError("Method not supported yet")
+            assert args.tl_args["single_source"] == False
+
+            direct_multiple_transfer_weights(args.tl_args["source_maps"], args.tl_args["source_weights"], 
+                                             mac, args.tl_args["policy_distillation"], args.pad_input)
 
     # Give runner the scheme
     runner.setup(scheme=scheme, groups=groups, preprocess=preprocess, mac=mac)

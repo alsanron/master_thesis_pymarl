@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 from plt_tools import include_plot_mean, include_plot_median, load_data
 from tl_metrics import auc_ratio
 
 
-def generate_training_figure(models:list, label:str, only_last_legend:bool=False, baseline:str=None, median:bool=False):
+def generate_training_figure(models:list, label:str, only_last_legend:bool=False, baseline:str=None, median:bool=False, show:bool=False):
     fig, axes = plt.subplots(2, 2, figsize=(20, 8))
     variables = ['battle_won_mean', 'test_battle_won_mean', 'return_mean', 'test_return_mean', 
                 #  'ep_length_mean', 'epsilon', 'loss', 'wall_time_min'
@@ -48,5 +49,20 @@ def generate_training_figure(models:list, label:str, only_last_legend:bool=False
     plt.tight_layout()
     if label:
         plt.savefig("figures/" + label)
-    plt.show()
 
+    if show:
+        plt.show()
+
+
+def validate_baselines():
+    for file in os.listdir("data/baselines"):
+        if not "qmix" in file:
+            continue
+        
+        new_file = "data/baselines/" + file
+        old_file = "data/baselines_old/" + file
+
+        generate_training_figure([new_file, old_file], label="validation/" + file + "_validation.png", 
+                                 only_last_legend=True, baseline=new_file, median=True)
+
+validate_baselines()
