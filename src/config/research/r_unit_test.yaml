@@ -11,7 +11,7 @@ algorithm: "qmix"
 env: "sc2" 
 
 env_args:
-  map_name: "2s3z"
+  map_name: "3m"
   debug: False
 
 transfer: False # If true, transfer learning is used
@@ -19,6 +19,7 @@ transfer: False # If true, transfer learning is used
 pad_input: True # If true, input is padded before RNN
 pad_size: 512 # Greater than any state vector size
 
+epsilon_exp: False
 epsilon_start: 1 # 1:qmix, .5:coma
 epsilon_finish: 0.02 # 0.05:qmix, .01:coma
 epsilon_anneal_time: 100000 # 50000:qmix, 100000:coma
@@ -45,7 +46,7 @@ save_replay: False # Saving the replay of the model loaded from checkpoint_path
 local_results_path: "results" # Path for local results
 
 ### Usually kept as default
-mac: "basic_mac" # Basic controller
+mac: "basic_mac_transformer" # Basic controller
 
 # --- RL hyperparameters ---
 gamma: 0.99
@@ -56,7 +57,7 @@ optim_eps: 0.00001 # RMSProp epsilon
 grad_norm_clip: 10 # Reduce magnitude of gradients above this L2 norm
 
 # --- Agent parameters ---
-agent: "rnn" # Default rnn agent
+agent: "transformer" # Default rnn agent
 rnn_hidden_dim: 64 # Size of hidden state for default rnn agent
 obs_agent_id: True # Include the agent's one_hot id in the observation
 obs_last_action: True # Include the agent's last action (one_hot) in the observation

@@ -6,7 +6,7 @@ import torch as th
 from torch.optim import RMSprop
 
 
-class QLearner:
+class QLearnerTransformer:
     def __init__(self, mac, scheme, logger, args):
         self.args = args
         self.mac = mac
@@ -20,6 +20,7 @@ class QLearner:
         if args.mixer is not None:
             if args.mixer == "vdn":
                 self.mixer = VDNMixer()
+
             elif args.mixer == "qmix":
                 self.mixer = QMixer(args)
             else:
@@ -27,6 +28,7 @@ class QLearner:
             self.params += list(self.mixer.parameters())
             self.target_mixer = copy.deepcopy(self.mixer)
 
+        # TODO Is this the one more optimal?
         self.optimiser = RMSprop(params=self.params, lr=args.lr, alpha=args.optim_alpha, eps=args.optim_eps)
 
         # a little wasteful to deepcopy (e.g. duplicates action selector), but should work for any MAC
@@ -43,23 +45,15 @@ class QLearner:
         mask[:, 1:] = mask[:, 1:] * (1 - terminated[:, :-1])
         avail_actions = batch["avail_actions"]
 
-        # Calculate Transfer Learning parameters
-        # TODO This should be moved upstream
-        freeze = False
-        if self.args.transfer:
-            if self.args.tl_args["method"] == "direct":
-                pass # No need to do anything
-            elif self.args.tl_args["method"] == "direct_unfreeze":
-                unfreeze_timestep = self.args.epsilon_anneal_time * self.args.tl_args["unfreeze_percentage_training"]
-                freeze = t_env < unfreeze_timestep
-            else:
-                raise ValueError("Method {} not recognised.".format(self.args.tl_args["method"]))
+        # freezing TL parameters
             
         # Calculate estimated Q-Values
+        # TODO Change so that the user can choose whether to train on the whole sequence of timesteps or just the last one!
         mac_out = []
-        self.mac.init_hidden(batch.batch_size)
         for t in range(batch.max_seq_length):
-            agent_outs = self.mac.forward(batch, t=t, freeze_rnn=freeze)
+            agent_outs = self.mac.forward(batch, t=t)
+            agent_outs = agent_outs[:,:,-1,:] # only consider the output for the last timestep...
+
             mac_out.append(agent_outs)
         mac_out = th.stack(mac_out, dim=1)  # Concat over time
 
@@ -68,9 +62,12 @@ class QLearner:
 
         # Calculate the Q-Values necessary for the target
         target_mac_out = []
-        self.target_mac.init_hidden(batch.batch_size)
         for t in range(batch.max_seq_length):
             target_agent_outs = self.target_mac.forward(batch, t=t)
+
+            # TODO change as well
+            target_agent_outs = target_agent_outs[:,:,-1,:] 
+
             target_mac_out.append(target_agent_outs)
 
         # We don't need the first timesteps Q-Value estimate for calculating targets

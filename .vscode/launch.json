@@ -1,17 +1,16 @@
 {
     "version": "0.2.0",
     "configurations": [
-
         {
             "name": "Python Debugger: Current File",
-            "type": "debugpy",
+            "type": "debugpy", // cuda-gdb"debugpy
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                      "--research_config=qmix_transfer",
+                      "--research_config=r_unit_test_transformer",
                       "--batch_job=False",
-                      "--use_cuda=True"
+                      "--use_cuda=True",
                     ]
         }
     ]

@@ -46,6 +46,7 @@ class EpisodeRunner:
         self.t = 0
 
     def run(self, test_mode=False):
+        # runs a new episode from 0
         self.reset()
 
         terminated = False

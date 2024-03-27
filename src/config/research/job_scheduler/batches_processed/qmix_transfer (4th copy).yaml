@@ -18,15 +18,16 @@ transfer: True # If true, transfer learning is used
 tl_args:
   single_source: True # If true, only one source is used for transfer learning
   source_maps: ["baselines/3m_rnn_qmix"] # Maps to use for transfer learning
+  source_weights: [0] # Timestamp of weights to use for transfer learning. -1 means latest
   method: "direct_unfreeze" # direct, direct_unfreeze
-  unfreeze_percentage_training: 0.0 # Percentage of the epsilon anneal time to unfreeze the model
-  policy_distillation: "mean" # defines how different weights are combined
+  unfreeze_percentage_training: 0.2 # Percentage of the epsilon anneal time to unfreeze the model
+  policy_distillation: "mean" # defines how different weights are combined. Only active if single_source is False
 
 pad_input: False # If true, input is padded before RNN
 pad_size: 512 # Greater than any state vector size
 
 epsilon_exp: True
-epsilon_start: 0.05 # 1:qmix, .5:coma
+epsilon_start: 1 # 1:qmix, .5:coma
 epsilon_finish: 0.05 # 0.05:qmix, .01:coma
 epsilon_anneal_time: 50000 # 50000:qmix, 100000:coma
 
