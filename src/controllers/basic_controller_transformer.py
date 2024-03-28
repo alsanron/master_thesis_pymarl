@@ -30,13 +30,14 @@ class BasicMACTransformer:
         # TODO remove this freeze_rnn from here
         agent_inputs = self._build_inputs(ep_batch, t)
 
-        agent_outs = self.agent(agent_inputs)
+        if t == -1:
+            agent_outs = self.agent(agent_inputs, causal=True)
+            agent_outs = th.movedim(agent_outs.view(ep_batch.batch_size, self.n_agents, ep_batch.max_seq_length, -1), 2, 1)
+        else:
+            agent_outs = self.agent(agent_inputs)
+            agent_outs = agent_outs.view(ep_batch.batch_size, self.n_agents, t+1, -1) # redo the reshaping
 
-        # Softmax the agent outputs if they're policy logits
-        if self.agent_output_type == "pi_logits":
-            raise NotImplementedError("This is not supported yet for Transformers!")
-
-        return agent_outs.view(ep_batch.batch_size, self.n_agents, t+1, -1) # redo the reshaping
+        return agent_outs
 
     def init_hidden(self, batch_size):
         # just for legacy usage
@@ -60,28 +61,45 @@ class BasicMACTransformer:
     def _build_agents(self, input_shape):
         self.agent = agent_REGISTRY[self.args.agent](input_shape, self.args)
 
-    def _build_inputs(self, batch, t):
+    def _build_inputs(self, batch, t=-1):
         # Assumes homogenous agents with flat observations.
         # Other MACs might want to e.g. delegate building inputs to each agent
         bs = batch.batch_size
         inputs = []
-        inputs.append(batch["obs"][:, :(t+1)])  # considers the whole sequence of inputs until current ts
 
-        if self.args.obs_last_action:
-            zeros_array = th.zeros_like(batch["actions_onehot"][:, t]).unsqueeze(1)
-            if t == 0:
-                inputs.append(zeros_array)
-            else:
+        if t == -1: # then we parse the whole batch of sequences at once, applying causal mask
+            inputs.append(batch["obs"])  # considers the whole sequence of inputs until current ts
+
+            if self.args.obs_last_action:
                 # inputs actions taken in prevous timesteps. Current timestemp actions are
-                inputs.append(th.cat([batch["actions_onehot"][:, :t], zeros_array], dim=1))
+                inputs.append(batch["actions_onehot"])
 
-        if self.args.obs_agent_id:
-            inputs.append(th.eye(self.n_agents, device=batch.device).unsqueeze(0).expand(bs, t+1, -1, -1))
+            if self.args.obs_agent_id:
+                inputs.append(th.eye(self.n_agents, device=batch.device).unsqueeze(0).expand(bs, batch.max_seq_length, -1, -1))
 
-        inputs = [th.movedim(x, 2, 1) for x in inputs] # move number of agents to second dimension
+            inputs = [th.movedim(x, 2, 1) for x in inputs] # move number of agents to second dimension
+            inputs = th.cat([x.reshape(bs*self.n_agents, batch.max_seq_length, -1) for x in inputs], dim=2)
 
-        # bs*self.n_agents may be kept, as observations drawn for each agent do not have to change
-        inputs = th.cat([x.reshape(bs*self.n_agents, t+1, -1) for x in inputs], dim=2)
+        else:
+            inputs.append(batch["obs"][:, :(t+1)])  # considers the whole sequence of inputs until current ts
+
+            if self.args.obs_last_action:
+                zeros_array = th.zeros_like(batch["actions_onehot"][:, t]).unsqueeze(1)
+                if t == 0:
+                    inputs.append(zeros_array)
+                else:
+                    # inputs actions taken in prevous timesteps. Current timestemp actions are
+                    inputs.append(th.cat([batch["actions_onehot"][:, :t], zeros_array], dim=1))
+
+            if self.args.obs_agent_id:
+                inputs.append(th.eye(self.n_agents, device=batch.device).unsqueeze(0).expand(bs, t+1, -1, -1))
+
+            inputs = [th.movedim(x, 2, 1) for x in inputs] # move number of agents to second dimension
+
+            # bs*self.n_agents may be kept, as observations drawn for each agent do not have to change
+            inputs = th.cat([x.reshape(bs*self.n_agents, t+1, -1) for x in inputs], dim=2)
+
+
         return inputs
 
     def _get_input_shape(self, scheme):

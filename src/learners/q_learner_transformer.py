@@ -49,29 +49,38 @@ class QLearnerTransformer:
             
         # Calculate estimated Q-Values
         # TODO Change so that the user can choose whether to train on the whole sequence of timesteps or just the last one!
-        mac_out = []
-        for t in range(batch.max_seq_length):
-            agent_outs = self.mac.forward(batch, t=t)
-            agent_outs = agent_outs[:,:,-1,:] # only consider the output for the last timestep...
+        # TODO this is not optimized...
+        
+        mac_out = self.mac.forward(batch, t=-1)
 
-            mac_out.append(agent_outs)
-        mac_out = th.stack(mac_out, dim=1)  # Concat over time
+        if False:
+            mac_out = []
+            for t in range(batch.max_seq_length):
+                agent_outs = self.mac.forward(batch, t=t)
+                agent_outs = agent_outs[:,:,-1,:] # only consider the output for the last timestep...
+
+                mac_out.append(agent_outs)
+            mac_out = th.stack(mac_out, dim=1)  # Concat over time
 
         # Pick the Q-Values for the actions taken by each agent
         chosen_action_qvals = th.gather(mac_out[:, :-1], dim=3, index=actions).squeeze(3)  # Remove the last dim
 
         # Calculate the Q-Values necessary for the target
-        target_mac_out = []
-        for t in range(batch.max_seq_length):
-            target_agent_outs = self.target_mac.forward(batch, t=t)
+        if False:
+            target_mac_out = []
+            for t in range(batch.max_seq_length):
+                target_agent_outs = self.target_mac.forward(batch, t=t)
 
-            # TODO change as well
-            target_agent_outs = target_agent_outs[:,:,-1,:] 
+                # TODO change as well
+                target_agent_outs = target_agent_outs[:,:,-1,:] 
 
-            target_mac_out.append(target_agent_outs)
+                target_mac_out.append(target_agent_outs)
 
-        # We don't need the first timesteps Q-Value estimate for calculating targets
-        target_mac_out = th.stack(target_mac_out[1:], dim=1)  # Concat across time
+            # We don't need the first timesteps Q-Value estimate for calculating targets
+            target_mac_out = th.stack(target_mac_out[1:], dim=1)  # Concat across time
+
+        target_mac_out = self.target_mac.forward(batch, t=-1)
+        target_mac_out = target_mac_out[:, 1:] # Remove the first timestep
 
         # Mask out unavailable actions
         target_mac_out[avail_actions[:, 1:] == 0] = -9999999

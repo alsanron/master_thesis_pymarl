@@ -2,28 +2,29 @@ from main_plot import generate_training_figure
 
 
 ############ BLOCK 1 ############
-generate_training_figure(["baselines/3m_rnn_qmix", 
+generate_training_figure(["data/baselines/3m_rnn_qmix", 
+                          "data/baselines/3m_transformer_qmix",
                           # "3m_from-3m_rnn_qmix_unfreeze0.2", 
                           # "3m_from-8m_rnn_qmix_unfreeze0.2",
                           # "3m_from-25m_rnn_qmix_unfreeze0.2", 
                         #   "3m_from-5m_rnn_qmix_unfreeze0.2" # currently it doesnt train properly
                           ], label="tl_qmix/3m_rnn_qmix.png", 
-                          only_last_legend=True, baseline="baselines/3m_rnn_qmix", median=True)
+                          only_last_legend=True, baseline="data/baselines/3m_rnn_qmix", median=True)
 
 # generate_training_figure(["3m_rnn_qmix", "3m_from-2s3z_rnn_qmix_unfreeze0.2", "3m_from-3s_rnn_qmix_unfreeze0.2",
 #                           "3m_from-2m_rnn_qmix_unfreeze0.2"], label="tl_qmix/3m_rnn_qmix_ext.png", 
 #                           only_last_legend=True, baseline="3m_rnn_qmix", median=True)
 
-generate_training_figure(["baselines/8m_rnn_qmix", 
-                          # "8m_from-3m_rnn_qmix_unfreeze0.2", 
-                          # "8m_from-8m_rnn_qmix_unfreeze0.2",
-                          # "8m_from-25m_rnn_qmix_unfreeze0.2", 
-                          # "8m_from-3m-8m_rnn_qmix_unfreeze0.2_additive", 
-                          # "8m_from-3m-8m_rnn_qmix_unfreeze0.2_mean"
-                        #   "8m_from-5m_rnn_qmix_direct"
-                          ], 
-                          label="tl_qmix/8m_rnn_qmix.png", only_last_legend=True, 
-                          baseline="baselines/8m_rnn_qmix", median=True)
+# generate_training_figure(["baselines/8m_rnn_qmix", 
+#                           # "8m_from-3m_rnn_qmix_unfreeze0.2", 
+#                           # "8m_from-8m_rnn_qmix_unfreeze0.2",
+#                           # "8m_from-25m_rnn_qmix_unfreeze0.2", 
+#                           # "8m_from-3m-8m_rnn_qmix_unfreeze0.2_additive", 
+#                           # "8m_from-3m-8m_rnn_qmix_unfreeze0.2_mean"
+#                         #   "8m_from-5m_rnn_qmix_direct"
+#                           ], 
+#                           label="tl_qmix/8m_rnn_qmix.png", only_last_legend=True, 
+#                           baseline="baselines/8m_rnn_qmix", median=True)
 
 
 # generate_training_figure(["25m_rnn_qmix", "25m_from-3m_rnn_qmix_unfreeze0.2", "25m_from-8m_rnn_qmix_unfreeze0.2",

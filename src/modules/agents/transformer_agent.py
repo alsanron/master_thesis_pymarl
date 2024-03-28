@@ -21,10 +21,16 @@ class TransformerAgent(nn.Module):
         # TODO should I initialize weights in a better way?
 
 
-    def forward(self, inputs):
+    def forward(self, inputs, causal:bool=False):
         x = F.relu(self.fc1(inputs))
 
-        x = self.transformer(x, x)
+        if causal:
+            mask = self.transformer.generate_square_subsequent_mask(x.size(1)).to(x.device)
+            mask[mask == 0] = float('-inf')
+            mask = th.triu(mask, diagonal=1)
+            x = self.transformer(x, x, src_mask=mask, tgt_mask=mask, src_is_causal=True, tgt_is_causal=True)
+        else:
+            x = self.transformer(x, x)
 
         q = self.fc2(x)
 

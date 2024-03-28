@@ -65,4 +65,4 @@ def validate_baselines():
         generate_training_figure([new_file, old_file], label="validation/" + file + "_validation.png", 
                                  only_last_legend=True, baseline=new_file, median=True)
 
-validate_baselines()
+# validate_baselines()
